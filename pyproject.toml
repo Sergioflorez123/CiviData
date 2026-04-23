@@ -1,0 +1,16 @@
+[project]
+name = "cividata"
+version = "0.1.0"
+description = "Pipeline ETL para datos abiertos de Colombia - SECOP, Educación y más"
+requires-python = ">=3.14"
+dependencies = [
+    "pandas>=2.0",
+    "requests>=2.31",
+    "sqlalchemy>=2.0",
+    "psycopg2-binary>=2.9",
+    "scrapy>=2.11",
+    "pyspark>=3.5",
+]
+
+[dependency-groups]
+dev = []
