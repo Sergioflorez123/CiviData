@@ -17,3 +17,4 @@ CONVENTIONS.md
 .idea/
 .vscode/
 *.log
+postgres_data/
