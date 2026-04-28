@@ -10,6 +10,8 @@
 | [CATALOGO.md](CATALOGO.md) | Análisis de catálogo de datos abiertos |
 | [POWERBI_GUIDE.md](POWERBI_GUIDE.md) | Guía de conexión Power BI → PostgreSQL |
 | [INDICADORES.md](INDICADORES.md) | Resumen de indicadores E-02 a E-09 |
+| [RAG.md](RAG.md) | Modelo RAG con LangChain para análisis inteligente |
+| [DAX_CONSULTAS.md](DAX_CONSULTAS.md) | Consultas DAX para dashboards Power BI |
 
 ---
 
@@ -19,13 +21,12 @@
 - **Contratación SECOP**: ~196k registros extraídos, 48k en marts
 - **Dashboard de contratación**: Listo para implementar
 
-### ⚠️ Datos Incompletos
-- **Educación**: Solo 14 registros (dataset de prueba)
+### 📋 Extracción Configurada
+- **Educación MEN**: 7 datasets configurados (establecimientos, matrícula, deserción, graduados, Saber 11)
+- **Educación DANE**: 2 datasets (GEIH mercado laboral, estadísticas educación formal)
 - **Catálogo CKAN**: API no disponible (404)
 
 ### 📋 Por Extraer
-- Directorio establecimientos educativos (9bqa-vc8t)
-- Estadísticas deserción SNIES
 - GEIH DANE (mercado laboral)
 - Datos SISBEN
 - Datos salud
@@ -41,13 +42,13 @@ El proyecto está diseñado para añadir nuevas categorías y dashboards con fac
 PostgreSQL: cividata
 ├── clean                    # Datos normalizados
 │   ├── contratacion         # ✅ Listo
-│   ├── educacion            # ⚠️ Datos limitados
+│   ├── educacion            # 📋 Configurado (7+2 datasets MEN+DANE)
 │   ├── salud                # 📋 Por crear
 │   ├── catalogo             # ⚠️ API no disponible
 │   └── sisben               # 📋 Por crear
 │
 └── marts                    # Tablas analíticas
-    ��── contratacion         # ✅ Tabla maestra
+    ├── contratacion         # ✅ Tabla maestra
     ├── resumen_departamento # ✅
     ├── resumen_entidad      # ✅
     ├── resumen_sector       # ✅
@@ -163,7 +164,7 @@ Ver [POWERBI_GUIDE.md](POWERBI_GUIDE.md)
 | Categoría | Tablas | Registros |
 |-----------|--------|----------|
 | Contratación | 5 (clean) + 5 (marts) | ~196k raw / ~48k marts |
-| Educación | 1 (prueba) | 14 |
+| Educación | 9 datasets config | Pendiente extracción |
 
 ---
 

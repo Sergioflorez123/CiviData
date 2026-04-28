@@ -64,6 +64,16 @@ def run_clean_spark():
     return results
 
 
+def run_consolidate_secop():
+    """Consolida los 3 CSVs de SECOP en tabla unificada."""
+    from src.transform.consolidate_secop import consolidate_secop
+
+    logger.info("[TRANSFORM] Consolidando CSVs de SECOP")
+    result = consolidate_secop()
+    logger.info(f"[TRANSFORM] Consolidado: {result}")
+    return result
+
+
 def run_load_postgres():
     """Carga datos limpios a PostgreSQL."""
     from src.load.load_to_postgres import (
@@ -95,16 +105,24 @@ def run_full_pipeline(dataset: str = "secop_ii", limit: int = 50000):
     logger.info("=" * 50)
 
     # 1. Extract
-    logger.info("[1/3] FASE: EXTRACT")
+    logger.info("[1/4] FASE: EXTRACT")
     run_extract_contratacion(dataset, limit)
     run_extract_educacion()
 
     # 2. Transform
-    logger.info("[2/3] FASE: TRANSFORM")
+    logger.info("[2/4] FASE: TRANSFORM")
     run_clean_contratacion()
+    run_clean_educacion()
 
-    # 3. Load
-    logger.info("[3/3] FASE: LOAD")
+    # 3. Consolidate (automático después de transform)
+    logger.info("[3/4] FASE: CONSOLIDATE")
+    try:
+        run_consolidate_secop()
+    except Exception as e:
+        logger.warning(f"[CONSOLIDATE] No se pudo consolidar: {e}")
+
+    # 4. Load
+    logger.info("[4/4] FASE: LOAD")
     try:
         run_load_postgres()
     except Exception as e:
@@ -130,7 +148,7 @@ def main():
     parser.add_argument(
         "--phase",
         "-p",
-        choices=["extract", "transform", "load", "all"],
+        choices=["extract", "transform", "load", "consolidate", "all"],
         default="all",
         help="Fase a ejecutar",
     )
@@ -151,8 +169,15 @@ def main():
         else:
             run_clean_contratacion()
             run_clean_educacion()
+        # Consolidación automática después de transform
+        try:
+            run_consolidate_secop()
+        except Exception as e:
+            logger.warning(f"[CONSOLIDATE] No se pudo consolidar: {e}")
     elif args.phase == "load":
         run_load_postgres()
+    elif args.phase == "consolidate":
+        run_consolidate_secop()
 
 
 if __name__ == "__main__":
