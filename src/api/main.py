@@ -4,6 +4,7 @@ Endpoints para consultas inteligentes a los datos.
 """
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List
 import os
@@ -17,12 +18,21 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# CORS para frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 rag_service = RAGService()
 
 
 class QueryRequest(BaseModel):
     question: str
-    category: Optional[str] = "contratacion"
+    category: Optional[str] = "contratos"
     analysis_type: Optional[str] = "summary"
 
 

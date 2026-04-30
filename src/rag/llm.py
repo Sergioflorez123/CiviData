@@ -1,21 +1,28 @@
 import os
 from typing import Optional
-from langchain_openai import OpenAI
-from langchain.schema import HumanMessage
+from openai import OpenAI
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Cargar .env desde el directorio del proyecto
+env_path = Path(__file__).parent.parent.parent / ".env"
+load_dotenv(env_path)
 
 
 class OpenRouterLLM:
-    """Wrapper for OpenRouter API (compatible with OpenAI SDK)."""
+    """Wrapper for Groq API."""
 
     def __init__(
         self,
-        model: str = "openai/gpt-4o",
+        model: str = "llama-3.3-70b-versatile",
         temperature: float = 0.3,
         max_tokens: int = 2000,
     ):
-        self.api_key = os.getenv("OPENROUTER_API_KEY")
+        self.api_key = os.getenv("GROQ_API_KEY") or os.getenv("OPENROUTER_API_KEY")
         if not self.api_key:
-            raise ValueError("OPENROUTER_API_KEY not found in environment")
+            raise ValueError(
+                "GROQ_API_KEY or OPENROUTER_API_KEY not found in environment"
+            )
 
         self.model = model
         self.temperature = temperature
@@ -23,7 +30,7 @@ class OpenRouterLLM:
 
         self.client = OpenAI(
             api_key=self.api_key,
-            base_url="https://openrouter.ai/api/v1",
+            base_url="https://api.groq.com/openai/v1",
         )
 
     def invoke(self, prompt: str) -> str:
