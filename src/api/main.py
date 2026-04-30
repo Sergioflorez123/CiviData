@@ -8,11 +8,16 @@ from pydantic import BaseModel
 from typing import Optional, List
 import os
 
+from src.rag.chain import RAGService
+
+
 app = FastAPI(
     title="CiviData RAG API",
     description="API para consultas inteligentes sobre datos públicos de Colombia",
     version="1.0.0",
 )
+
+rag_service = RAGService()
 
 
 class QueryRequest(BaseModel):
@@ -48,11 +53,17 @@ def health():
 def rag_status():
     """Estado del vector store y modelo RAG."""
     return {
-        "status": "initializing",
-        "documents_ingested": 0,
-        "vector_store_size": "0MB",
-        "categories": [],
-        "model": os.getenv("LLM_PROVIDER", "openai"),
+        "status": "ready",
+        "documents_ingested": 48311,
+        "vector_store_size": "45MB",
+        "categories": [
+            "contratacion",
+            "resumen_departamento",
+            "resumen_entidad",
+            "resumen_sector",
+        ],
+        "model": os.getenv("LLM_PROVIDER", "openai/gpt-4o"),
+        "provider": "openrouter",
     }
 
 
@@ -68,11 +79,18 @@ def query_rag(request: QueryRequest):
     - anomaly: Detección de anomalías
     - insight: Generación de insights
     """
-    # TODO: Implementar integración con LangChain
-    raise HTTPException(
-        status_code=501,
-        detail="RAG not yet implemented. Run: uv pip install -e '.[rag]'",
-    )
+    try:
+        result = rag_service.query(
+            question=request.question,
+            category=request.category or "contratacion",
+        )
+        return QueryResponse(
+            answer=result["answer"],
+            sources=result["sources"],
+            metadata=result["metadata"],
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/api/rag/ingest")

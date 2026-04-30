@@ -263,6 +263,58 @@ const data = await response.json();
 console.log(data.answer);
 ```
 
+### Endpoints para Frontend
+
+#### Chat/Query
+
+```bash
+POST http://localhost:8000/api/rag/query
+Content-Type: application/json
+
+{
+    "question": "¿Cuántos contratos hay en Nariño?",
+    "category": "contratacion"
+}
+```
+
+**Respuesta:**
+```json
+{
+    "answer": "Hay aproximadamente X contratos en el departamento de Nariño...",
+    "sources": ["marts.contratacion"],
+    "metadata": {
+        "model": "openai/gpt-4o",
+        "category": "contratacion"
+    }
+}
+```
+
+#### Estado
+
+```bash
+GET http://localhost:8000/api/rag/status
+```
+
+#### Salud
+
+```bash
+GET http://localhost:8000/health
+```
+
+### Categorías disponibles
+
+| Category | Descripción |
+|----------|-------------|
+| `contratacion` | Datos de contratos (48,311 registros) |
+| `resumen_departamento` | Resumen por departamento (34 filas) |
+| `resumen_entidad` | Resumen por entidad (100 filas) |
+| `resumen_sector` | Resumen por sector (25 filas) |
+
+### Notas
+
+- El modelo **NO hace predicciones** - solo responde basadas en datos
+- Usa `category` para filtrar qué tipo de datos buscar
+
 ## Métricas y Monitoreo
 
 - **Latencia**: Tiempo de respuesta de queries
