@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análisis ANOVA — Contratación Pública Colombiana</title>
+<style>
+:root { --bg:#0f1117; --card:#1a1d27; --border:#2a2d3a; --text:#e4e4e7; --muted:#a1a1aa; --accent:#6366f1; --green:#22c55e; --red:#ef4444; --yellow:#eab308; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+.container { max-width:1100px; margin:0 auto; padding:2rem 1.5rem; }
+header { text-align:center; padding:3rem 0 2rem; border-bottom:1px solid var(--border); margin-bottom:2rem; }
+header h1 { font-size:2rem; font-weight:700; margin-bottom:0.5rem; }
+header h1 span { color:var(--accent); }
+header p { color:var(--muted); font-size:1.05rem; }
+.meta { margin-top:1rem; font-size:0.85rem; color:var(--muted); }
+.section-num { display:inline-block; background:var(--accent); color:#fff; width:32px; height:32px; border-radius:50%; text-align:center; line-height:32px; font-weight:700; font-size:0.9rem; margin-right:0.5rem; }
+.card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1.5rem; margin-bottom:2rem; }
+.card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem; }
+.card-header h3 { font-size:1.15rem; font-weight:600; }
+.badge { padding:0.25rem 0.75rem; border-radius:9999px; font-size:0.8rem; font-weight:600; }
+.badge-reject { background:rgba(239,68,68,0.15); color:var(--red); border:1px solid rgba(239,68,68,0.3); }
+.badge-fail { background:rgba(34,197,94,0.15); color:var(--green); border:1px solid rgba(34,197,94,0.3); }
+.hypotheses { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:1rem 0; }
+.hypothesis { padding:1rem; border-radius:8px; border-left:3px solid; }
+.h0 { background:rgba(239,68,68,0.05); border-color:var(--red); }
+.h1 { background:rgba(99,102,241,0.05); border-color:var(--accent); }
+.hypothesis strong { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; }
+.h0 strong { color:var(--red); }
+.h1 strong { color:var(--accent); }
+.hypothesis p { margin-top:0.35rem; font-size:0.9rem; color:var(--muted); }
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:0.75rem; margin:1rem 0; }
+.stat { background:rgba(99,102,241,0.05); border:1px solid var(--border); border-radius:8px; padding:0.75rem 1rem; text-align:center; }
+.stat-label { font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
+.stat-value { font-size:1.2rem; font-weight:700; margin-top:0.25rem; }
+.stat-value.pval { color:var(--yellow); }
+.decision { padding:1rem; border-radius:8px; margin:1rem 0; font-size:0.95rem; }
+.decision-reject { background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); }
+.decision-fail { background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.2); }
+.decision strong { display:block; margin-bottom:0.25rem; }
+.dataset-info { font-size:0.8rem; color:var(--muted); background:rgba(0,0,0,0.2); padding:0.5rem 0.75rem; border-radius:6px; margin:0.5rem 0 1rem; }
+.charts-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(480px,1fr)); gap:1rem; margin:1rem 0; }
+.charts-row img { width:100%; border-radius:8px; border:1px solid var(--border); cursor:zoom-in; transition:opacity 0.2s; }
+.charts-row img:hover { opacity:0.85; }
+.lightbox { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); z-index:9999; justify-content:center; align-items:center; cursor:zoom-out; }
+.lightbox.active { display:flex; }
+.lightbox img { max-width:95%; max-height:95%; border-radius:8px; box-shadow:0 0 40px rgba(0,0,0,0.5); }
+.lightbox-close { position:absolute; top:1rem; right:1.5rem; color:#fff; font-size:2rem; cursor:pointer; opacity:0.7; }
+.lightbox-close:hover { opacity:1; }
+.means-table { width:100%; border-collapse:collapse; margin-top:0.75rem; font-size:0.85rem; }
+.means-table th { text-align:left; padding:0.4rem 0.6rem; border-bottom:2px solid var(--border); color:var(--muted); font-size:0.75rem; text-transform:uppercase; }
+.means-table td { padding:0.4rem 0.6rem; border-bottom:1px solid var(--border); }
+.means-table .bar-cell { width:25%; }
+.bar { height:6px; background:var(--accent); border-radius:3px; }
+.tukey-section { margin-top:1rem; padding-top:0.75rem; border-top:1px solid var(--border); }
+.tukey-section h4 { font-size:0.9rem; margin-bottom:0.5rem; color:var(--muted); }
+.tukey-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:0.4rem; max-height:250px; overflow-y:auto; }
+.tukey-item { display:flex; justify-content:space-between; align-items:center; padding:0.4rem 0.6rem; border-radius:6px; font-size:0.8rem; background:rgba(0,0,0,0.2); }
+.tukey-item.sig { border-left:3px solid var(--red); }
+.tukey-item.nosig { border-left:3px solid var(--green); }
+details summary { cursor:pointer; color:var(--muted); font-size:0.85rem; padding:0.5rem 0; }
+footer { text-align:center; padding:2rem 0; margin-top:2rem; border-top:1px solid var(--border); color:var(--muted); font-size:0.8rem; }
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Análisis <span>ANOVA</span> — Contratación Pública Colombiana</h1>
+<p>¿Existen diferencias estadísticamente significativas en el valor de contratos entre grupos?</p>
+<div class="meta">Generado: 21/05/2026 00:19 · Datos: anova_report_20260521_001911.json</div>
+</header>
+<h2 style="margin-bottom:1rem">Resumen de Hipótesis</h2>
+<table style="width:100%;border-collapse:collapse;margin-bottom:2rem;font-size:0.9rem;">
+<tr><th style="background:var(--accent);color:#fff;padding:0.6rem 0.8rem;text-align:left">#</th>
+<th style="background:var(--accent);color:#fff;padding:0.6rem 0.8rem;text-align:left">Hipótesis</th>
+<th style="background:var(--accent);color:#fff;padding:0.6rem 0.8rem;text-align:left">Dataset</th>
+<th style="background:var(--accent);color:#fff;padding:0.6rem 0.8rem;text-align:left">F</th>
+<th style="background:var(--accent);color:#fff;padding:0.6rem 0.8rem;text-align:left">p-value</th>
+<th style="background:var(--accent);color:#fff;padding:0.6rem 0.8rem;text-align:left">Decisión</th></tr>
+<tr><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">1</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">¿El valor de contratos difiere entre departamentos?</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-size:0.8rem;color:var(--muted)">Consolidado (SECOP I + II + Integrado, 133,371 reg...</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">525.4773</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-weight:700;color:var(--yellow)">&lt; 2.2e-16</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)"><strong>Rechazar H₀</strong></td></tr><tr><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">2</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">¿El valor de contratos difiere según la modalidad de selección?</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-size:0.8rem;color:var(--muted)">Consolidado (SECOP I + II + Integrado, 133,371 reg...</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">1381.1753</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-weight:700;color:var(--yellow)">&lt; 2.2e-16</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)"><strong>Rechazar H₀</strong></td></tr><tr><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">3</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">¿El valor de contratos difiere según el tipo de contrato?</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-size:0.8rem;color:var(--muted)">Consolidado (SECOP I + II + Integrado, 133,371 reg...</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">2021.9282</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-weight:700;color:var(--yellow)">&lt; 2.2e-16</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)"><strong>Rechazar H₀</strong></td></tr><tr><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">4</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">¿El valor de contratos difiere entre fuentes SECOP (I vs II vs Integrado)?</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-size:0.8rem;color:var(--muted)">Consolidado (SECOP I + II + Integrado, 133,371 reg...</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">5114.5758</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-weight:700;color:var(--yellow)">&lt; 2.2e-16</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)"><strong>Rechazar H₀</strong></td></tr><tr><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">5</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">¿El valor de contratos difiere según el sector de gasto? (SECOP II)</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-size:0.8rem;color:var(--muted)">SECOP II (48,310 registros con sector clasificado)...</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">81.8898</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-weight:700;color:var(--yellow)">&lt; 2.2e-16</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)"><strong>Rechazar H₀</strong></td></tr><tr><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">6</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">¿La modalidad afecta el valor de forma diferente según el departamento?</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-size:0.8rem;color:var(--muted)">Consolidado (SECOP I + II + Integrado, 133,371 reg...</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">261.8604</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-weight:700;color:var(--yellow)">&lt; 2.2e-16</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)"><strong>Rechazar H₀</strong></td></tr><tr><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">7</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">¿La combinación modalidad × tipo de contrato afecta el valor? (SECOP II)</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-size:0.8rem;color:var(--muted)">SECOP II (48,310 registros)...</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)">304.4777</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-weight:700;color:var(--yellow)">&lt; 2.2e-16</td><td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border)"><strong>Rechazar H₀</strong></td></tr></table><div class="card">
+<div class="card-header">
+<h3><span class="section-num">1</span>¿El valor de contratos difiere entre departamentos?</h3>
+<span class="badge badge-reject">Se rechaza H₀</span>
+</div>
+<div class="dataset-info">Dataset: Consolidado (SECOP I + II + Integrado, 133,371 registros)</div>
+<div class="hypotheses">
+<div class="hypothesis h0"><strong>H₀ (Nula)</strong><p>El valor promedio de contratos es igual en todos los departamentos de Colombia.</p></div>
+<div class="hypothesis h1"><strong>H₁ (Alternativa)</strong><p>Al menos un departamento tiene un valor promedio de contratos diferente.</p></div>
+</div>
+<div class="stats-grid">
+<div class="stat"><div class="stat-label">Estadístico F</div><div class="stat-value">525.4773</div></div>
+<div class="stat"><div class="stat-label">p-value</div><div class="stat-value pval">&lt; 2.2e-16</div></div>
+<div class="stat"><div class="stat-label">Decisión (α=0.05)</div><div class="stat-value" style="font-size:0.95rem">Se rechaza H₀</div></div>
+<div class="stat"><div class="stat-label">N grupos</div><div class="stat-value">33</div></div>
+<div class="stat"><div class="stat-label">N observaciones</div><div class="stat-value">133,368</div></div>
+
+</div>
+<div class="decision decision-reject">
+<strong>Decisión: Se rechaza H₀ (p &lt; 0.05)</strong>
+Los departamentos difieren significativamente en el valor promedio de contratación. Esto sugiere desigualdad territorial en la inversión pública o diferencias en la capacidad de gasto.
+
+</div>
+<div class="charts-row"><img src="boxplot_departamento_consolidado.png" alt="boxplot_departamento_consolidado.png" class="zoomable"><img src="bar_departamento_consolidado.png" alt="bar_departamento_consolidado.png" class="zoomable"></div>
+<div class="tukey-section">
+<h4>Post-hoc Tukey HSD — 45 comparaciones (42 significativas)</h4>
+<div class="tukey-grid"><div class="tukey-item sig"><span>Antioquia vs Bogotá D.C.</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Antioquia vs Boyacá</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Antioquia vs Cesar</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Antioquia vs Cundinamarca</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Antioquia vs Huila</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Antioquia vs Nariño</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Antioquia vs Santander</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Antioquia vs Tolima</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Antioquia vs Valle del Cauca</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Bogotá D.C. vs Boyacá</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Bogotá D.C. vs Cesar</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Bogotá D.C. vs Cundinamarca</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Bogotá D.C. vs Huila</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Bogotá D.C. vs Nariño</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Bogotá D.C. vs Santander</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Bogotá D.C. vs Tolima</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Bogotá D.C. vs Valle del Cauca</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Boyacá vs Cesar</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Boyacá vs Cundinamarca</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Boyacá vs Huila</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div></div>
+</div>
+<details><summary>Ver medias por grupo (33 grupos)</summary><table class="means-table"><tr><th>Grupo</th><th>Valor promedio</th><th></th></tr><tr><td>Antioquia</td><td>$469.3 M</td><td class="bar-cell"><div class="bar" style="width:100.0%"></div></td></tr><tr><td>Bogotá D.C.</td><td>$342.3 M</td><td class="bar-cell"><div class="bar" style="width:72.9%"></div></td></tr><tr><td>Vaupés</td><td>$244.0 M</td><td class="bar-cell"><div class="bar" style="width:52.0%"></div></td></tr><tr><td>Chocó</td><td>$216.4 M</td><td class="bar-cell"><div class="bar" style="width:46.1%"></div></td></tr><tr><td>Huila</td><td>$214.8 M</td><td class="bar-cell"><div class="bar" style="width:45.8%"></div></td></tr><tr><td>Caquetá</td><td>$176.9 M</td><td class="bar-cell"><div class="bar" style="width:37.7%"></div></td></tr><tr><td>Córdoba</td><td>$164.8 M</td><td class="bar-cell"><div class="bar" style="width:35.1%"></div></td></tr><tr><td>Boyacá</td><td>$148.4 M</td><td class="bar-cell"><div class="bar" style="width:31.6%"></div></td></tr><tr><td>Cauca</td><td>$148.1 M</td><td class="bar-cell"><div class="bar" style="width:31.6%"></div></td></tr><tr><td>Bolívar</td><td>$143.4 M</td><td class="bar-cell"><div class="bar" style="width:30.6%"></div></td></tr><tr><td>Casanare</td><td>$139.5 M</td><td class="bar-cell"><div class="bar" style="width:29.7%"></div></td></tr><tr><td>San Andrés, Providencia Y Santa Catalina</td><td>$138.8 M</td><td class="bar-cell"><div class="bar" style="width:29.6%"></div></td></tr><tr><td>Guainía</td><td>$138.1 M</td><td class="bar-cell"><div class="bar" style="width:29.4%"></div></td></tr><tr><td>Valle del Cauca</td><td>$131.6 M</td><td class="bar-cell"><div class="bar" style="width:28.1%"></div></td></tr><tr><td>Meta</td><td>$127.8 M</td><td class="bar-cell"><div class="bar" style="width:27.2%"></div></td></tr><tr><td>Risaralda</td><td>$126.5 M</td><td class="bar-cell"><div class="bar" style="width:27.0%"></div></td></tr><tr><td>Caldas</td><td>$124.4 M</td><td class="bar-cell"><div class="bar" style="width:26.5%"></div></td></tr><tr><td>Cundinamarca</td><td>$119.7 M</td><td class="bar-cell"><div class="bar" style="width:25.5%"></div></td></tr><tr><td>La Guajira</td><td>$117.3 M</td><td class="bar-cell"><div class="bar" style="width:25.0%"></div></td></tr><tr><td>Guaviare</td><td>$116.7 M</td><td class="bar-cell"><div class="bar" style="width:24.9%"></div></td></tr><tr><td>Amazonas</td><td>$116.0 M</td><td class="bar-cell"><div class="bar" style="width:24.7%"></div></td></tr><tr><td>Atlántico</td><td>$110.9 M</td><td class="bar-cell"><div class="bar" style="width:23.6%"></div></td></tr><tr><td>Cesar</td><td>$107.3 M</td><td class="bar-cell"><div class="bar" style="width:22.9%"></div></td></tr><tr><td>Vichada</td><td>$105.2 M</td><td class="bar-cell"><div class="bar" style="width:22.4%"></div></td></tr><tr><td>Santander</td><td>$104.6 M</td><td class="bar-cell"><div class="bar" style="width:22.3%"></div></td></tr><tr><td>Putumayo</td><td>$101.8 M</td><td class="bar-cell"><div class="bar" style="width:21.7%"></div></td></tr><tr><td>Norte de Santander</td><td>$101.7 M</td><td class="bar-cell"><div class="bar" style="width:21.7%"></div></td></tr><tr><td>Sucre</td><td>$90.9 M</td><td class="bar-cell"><div class="bar" style="width:19.4%"></div></td></tr><tr><td>Quindío</td><td>$85.4 M</td><td class="bar-cell"><div class="bar" style="width:18.2%"></div></td></tr><tr><td>Tolima</td><td>$78.0 M</td><td class="bar-cell"><div class="bar" style="width:16.6%"></div></td></tr><tr><td>Nariño</td><td>$73.6 M</td><td class="bar-cell"><div class="bar" style="width:15.7%"></div></td></tr><tr><td>Arauca</td><td>$59.8 M</td><td class="bar-cell"><div class="bar" style="width:12.8%"></div></td></tr><tr><td>Magdalena</td><td>$59.7 M</td><td class="bar-cell"><div class="bar" style="width:12.7%"></div></td></tr></table></details>
+</div><div class="card">
+<div class="card-header">
+<h3><span class="section-num">2</span>¿El valor de contratos difiere según la modalidad de selección?</h3>
+<span class="badge badge-reject">Se rechaza H₀</span>
+</div>
+<div class="dataset-info">Dataset: Consolidado (SECOP I + II + Integrado, 133,371 registros)</div>
+<div class="hypotheses">
+<div class="hypothesis h0"><strong>H₀ (Nula)</strong><p>El valor promedio es igual para todas las modalidades (Contratación Directa, Licitación Pública, Mínima Cuantía, etc.).</p></div>
+<div class="hypothesis h1"><strong>H₁ (Alternativa)</strong><p>Al menos una modalidad tiene un valor promedio diferente.</p></div>
+</div>
+<div class="stats-grid">
+<div class="stat"><div class="stat-label">Estadístico F</div><div class="stat-value">1381.1753</div></div>
+<div class="stat"><div class="stat-label">p-value</div><div class="stat-value pval">&lt; 2.2e-16</div></div>
+<div class="stat"><div class="stat-label">Decisión (α=0.05)</div><div class="stat-value" style="font-size:0.95rem">Se rechaza H₀</div></div>
+<div class="stat"><div class="stat-label">N grupos</div><div class="stat-value">29</div></div>
+<div class="stat"><div class="stat-label">N observaciones</div><div class="stat-value">133,322</div></div>
+
+</div>
+<div class="decision decision-reject">
+<strong>Decisión: Se rechaza H₀ (p &lt; 0.05)</strong>
+La modalidad de selección está fuertemente asociada al monto: las licitaciones públicas manejan valores mucho mayores que la mínima cuantía, lo cual es coherente con el diseño normativo.
+
+</div>
+<div class="charts-row"><img src="boxplot_modalidad_consolidado.png" alt="boxplot_modalidad_consolidado.png" class="zoomable"><img src="bar_modalidad_consolidado.png" alt="bar_modalidad_consolidado.png" class="zoomable"></div>
+<div class="tukey-section">
+<h4>Post-hoc Tukey HSD — 45 comparaciones (39 significativas)</h4>
+<div class="tukey-grid"><div class="tukey-item sig"><span>Contratacion Directa (Ley 1150 De 2007) vs Contratacion Minima Cuantia</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Contratacion Directa (Ley 1150 De 2007) vs Contratación Directa</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Contratacion Directa (Ley 1150 De 2007) vs Contratación Directa (Con Ofertas)</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Contratacion Directa (Ley 1150 De 2007) vs Contratación Directa (Ley 1150 De 2007)</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item nosig"><span>Contratacion Directa (Ley 1150 De 2007) vs Contratación Mínima Cuantía</span><span style="font-weight:600">p=1.000000 ○</span></div><div class="tukey-item sig"><span>Contratacion Directa (Ley 1150 De 2007) vs Contratación Régimen Especial</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Contratacion Directa (Ley 1150 De 2007) vs Mínima Cuantía</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Contratacion Directa (Ley 1150 De 2007) vs Regimen Especial</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Contratacion Directa (Ley 1150 De 2007) vs Régimen Especial</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Contratacion Minima Cuantia vs Contratación Directa</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Contratacion Minima Cuantia vs Contratación Directa (Con Ofertas)</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item nosig"><span>Contratacion Minima Cuantia vs Contratación Directa (Ley 1150 De 2007)</span><span style="font-weight:600">p=0.098514 ○</span></div><div class="tukey-item sig"><span>Contratacion Minima Cuantia vs Contratación Mínima Cuantía</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Contratacion Minima Cuantia vs Contratación Régimen Especial</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Contratacion Minima Cuantia vs Mínima Cuantía</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Contratacion Minima Cuantia vs Regimen Especial</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Contratacion Minima Cuantia vs Régimen Especial</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Contratación Directa vs Contratación Directa (Con Ofertas)</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Contratación Directa vs Contratación Directa (Ley 1150 De 2007)</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Contratación Directa vs Contratación Mínima Cuantía</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div></div>
+</div>
+<details><summary>Ver medias por grupo (29 grupos)</summary><table class="means-table"><tr><th>Grupo</th><th>Valor promedio</th><th></th></tr><tr><td>Licitación Pública Obra Publica</td><td>$27.76 mil M</td><td class="bar-cell"><div class="bar" style="width:100.0%"></div></td></tr><tr><td>Selección Abreviada Servicios De Salud</td><td>$17.95 mil M</td><td class="bar-cell"><div class="bar" style="width:64.7%"></div></td></tr><tr><td>Concurso De Méritos Con Lista Corta</td><td>$12.97 mil M</td><td class="bar-cell"><div class="bar" style="width:46.7%"></div></td></tr><tr><td>Licitacion Obra Publica</td><td>$11.86 mil M</td><td class="bar-cell"><div class="bar" style="width:42.7%"></div></td></tr><tr><td>Licitación Pública</td><td>$11.47 mil M</td><td class="bar-cell"><div class="bar" style="width:41.3%"></div></td></tr><tr><td>Licitación Obra Pública</td><td>$10.49 mil M</td><td class="bar-cell"><div class="bar" style="width:37.8%"></div></td></tr><tr><td>Licitacion Publica</td><td>$7.59 mil M</td><td class="bar-cell"><div class="bar" style="width:27.4%"></div></td></tr><tr><td>Seleccion Abreviada Menor Cuantia Sin Manifestacion Interes</td><td>$2.38 mil M</td><td class="bar-cell"><div class="bar" style="width:8.6%"></div></td></tr><tr><td>Selección Abreviada Subasta Inversa</td><td>$2.17 mil M</td><td class="bar-cell"><div class="bar" style="width:7.8%"></div></td></tr><tr><td>Concurso De Méritos Abierto</td><td>$2.14 mil M</td><td class="bar-cell"><div class="bar" style="width:7.7%"></div></td></tr><tr><td>Selección Abreviada De Menor Cuantía</td><td>$2.09 mil M</td><td class="bar-cell"><div class="bar" style="width:7.5%"></div></td></tr><tr><td>Contratación Régimen Especial (Con Ofertas)</td><td>$1.31 mil M</td><td class="bar-cell"><div class="bar" style="width:4.7%"></div></td></tr><tr><td>Contratos Y Convenios Con Más De Dos Partes</td><td>$1.21 mil M</td><td class="bar-cell"><div class="bar" style="width:4.4%"></div></td></tr><tr><td>Seleccion Abreviada De Menor Cuantia (Ley 1150 De 2007)</td><td>$1.21 mil M</td><td class="bar-cell"><div class="bar" style="width:4.3%"></div></td></tr><tr><td>Concurso De Meritos Abierto</td><td>$1.14 mil M</td><td class="bar-cell"><div class="bar" style="width:4.1%"></div></td></tr><tr><td>Subasta</td><td>$1.02 mil M</td><td class="bar-cell"><div class="bar" style="width:3.7%"></div></td></tr><tr><td>Contratación Directa (Con Ofertas)</td><td>$823.1 M</td><td class="bar-cell"><div class="bar" style="width:3.0%"></div></td></tr><tr><td>Régimen Especial</td><td>$745.1 M</td><td class="bar-cell"><div class="bar" style="width:2.7%"></div></td></tr><tr><td>Selección Abreviada De Menor Cuantía (Ley 1150 De 2007)</td><td>$708.3 M</td><td class="bar-cell"><div class="bar" style="width:2.6%"></div></td></tr><tr><td>Contratación Directa Menor Cuantía</td><td>$664.6 M</td><td class="bar-cell"><div class="bar" style="width:2.4%"></div></td></tr><tr><td>Contratación Régimen Especial</td><td>$199.0 M</td><td class="bar-cell"><div class="bar" style="width:0.7%"></div></td></tr><tr><td>Contratación Directa</td><td>$192.9 M</td><td class="bar-cell"><div class="bar" style="width:0.7%"></div></td></tr><tr><td>Mínima Cuantía</td><td>$178.8 M</td><td class="bar-cell"><div class="bar" style="width:0.6%"></div></td></tr><tr><td>Contratos Y Convenios Con Mas De Dos Partes</td><td>$177.8 M</td><td class="bar-cell"><div class="bar" style="width:0.6%"></div></td></tr><tr><td>Contratación Directa (Ley 1150 De 2007)</td><td>$143.0 M</td><td class="bar-cell"><div class="bar" style="width:0.5%"></div></td></tr><tr><td>Contratacion Minima Cuantia</td><td>$131.6 M</td><td class="bar-cell"><div class="bar" style="width:0.5%"></div></td></tr><tr><td>Contratacion Directa (Ley 1150 De 2007)</td><td>$95.4 M</td><td class="bar-cell"><div class="bar" style="width:0.3%"></div></td></tr><tr><td>Contratación Mínima Cuantía</td><td>$95.3 M</td><td class="bar-cell"><div class="bar" style="width:0.3%"></div></td></tr><tr><td>Regimen Especial</td><td>$47.0 M</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr></table></details>
+</div><div class="card">
+<div class="card-header">
+<h3><span class="section-num">3</span>¿El valor de contratos difiere según el tipo de contrato?</h3>
+<span class="badge badge-reject">Se rechaza H₀</span>
+</div>
+<div class="dataset-info">Dataset: Consolidado (SECOP I + II + Integrado, 133,371 registros)</div>
+<div class="hypotheses">
+<div class="hypothesis h0"><strong>H₀ (Nula)</strong><p>El valor promedio es igual para todos los tipos de contrato (Obra, Consultoría, Suministro, etc.).</p></div>
+<div class="hypothesis h1"><strong>H₁ (Alternativa)</strong><p>Al menos un tipo de contrato tiene un valor promedio diferente.</p></div>
+</div>
+<div class="stats-grid">
+<div class="stat"><div class="stat-label">Estadístico F</div><div class="stat-value">2021.9282</div></div>
+<div class="stat"><div class="stat-label">p-value</div><div class="stat-value pval">&lt; 2.2e-16</div></div>
+<div class="stat"><div class="stat-label">Decisión (α=0.05)</div><div class="stat-value" style="font-size:0.95rem">Se rechaza H₀</div></div>
+<div class="stat"><div class="stat-label">N grupos</div><div class="stat-value">23</div></div>
+<div class="stat"><div class="stat-label">N observaciones</div><div class="stat-value">133,316</div></div>
+
+</div>
+<div class="decision decision-reject">
+<strong>Decisión: Se rechaza H₀ (p &lt; 0.05)</strong>
+Los tipos de contrato tienen perfiles de valor muy distintos: obras e interventorías son significativamente más costosas que suministros o prestación de servicios.
+
+</div>
+<div class="charts-row"><img src="boxplot_tipo_contrato_consolidado.png" alt="boxplot_tipo_contrato_consolidado.png" class="zoomable"><img src="bar_tipo_contrato_consolidado.png" alt="bar_tipo_contrato_consolidado.png" class="zoomable"></div>
+<div class="tukey-section">
+<h4>Post-hoc Tukey HSD — 45 comparaciones (43 significativas)</h4>
+<div class="tukey-grid"><div class="tukey-item sig"><span>Compraventa vs Consultoría</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Compraventa vs Decreto 092 De 2017</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Compraventa vs Obra</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Compraventa vs Otro</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Compraventa vs Otro Tipo De Contrato</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Compraventa vs Prestacion De Servicios</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Compraventa vs Prestación De Servicios</span><span style="font-weight:600">p=0.000622 ✗ sig</span></div><div class="tukey-item sig"><span>Compraventa vs Suministro</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Compraventa vs Suministros</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Consultoría vs Decreto 092 De 2017</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Consultoría vs Obra</span><span style="font-weight:600">p=0.000214 ✗ sig</span></div><div class="tukey-item nosig"><span>Consultoría vs Otro</span><span style="font-weight:600">p=1.000000 ○</span></div><div class="tukey-item sig"><span>Consultoría vs Otro Tipo De Contrato</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Consultoría vs Prestacion De Servicios</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Consultoría vs Prestación De Servicios</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Consultoría vs Suministro</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Consultoría vs Suministros</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Decreto 092 De 2017 vs Obra</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Decreto 092 De 2017 vs Otro</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Decreto 092 De 2017 vs Otro Tipo De Contrato</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div></div>
+</div>
+<details><summary>Ver medias por grupo (23 grupos)</summary><table class="means-table"><tr><th>Grupo</th><th>Valor promedio</th><th></th></tr><tr><td>Crédito</td><td>$260.06 mil M</td><td class="bar-cell"><div class="bar" style="width:100.0%"></div></td></tr><tr><td>Credito</td><td>$5.49 mil M</td><td class="bar-cell"><div class="bar" style="width:2.1%"></div></td></tr><tr><td>Otro Tipo De Contrato</td><td>$2.79 mil M</td><td class="bar-cell"><div class="bar" style="width:1.1%"></div></td></tr><tr><td>Otro</td><td>$1.58 mil M</td><td class="bar-cell"><div class="bar" style="width:0.6%"></div></td></tr><tr><td>Consultoría</td><td>$1.55 mil M</td><td class="bar-cell"><div class="bar" style="width:0.6%"></div></td></tr><tr><td>Obra</td><td>$1.10 mil M</td><td class="bar-cell"><div class="bar" style="width:0.4%"></div></td></tr><tr><td>Interventoría</td><td>$1.10 mil M</td><td class="bar-cell"><div class="bar" style="width:0.4%"></div></td></tr><tr><td>Seguros</td><td>$816.2 M</td><td class="bar-cell"><div class="bar" style="width:0.3%"></div></td></tr><tr><td>Interventoria</td><td>$629.5 M</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr><tr><td>Consultoria</td><td>$430.2 M</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr><tr><td>Suministros</td><td>$380.1 M</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr><tr><td>Arrendamiento De Inmuebles</td><td>$301.9 M</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr><tr><td>No Definido</td><td>$299.7 M</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr><tr><td>Acuerdo Marco</td><td>$203.0 M</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr><tr><td>Decreto 092 De 2017</td><td>$191.0 M</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr><tr><td>Prestación De Servicios</td><td>$158.7 M</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr><tr><td>Arrendamiento De Muebles</td><td>$148.8 M</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr><tr><td>Compraventa</td><td>$141.9 M</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr><tr><td>Comodato</td><td>$131.2 M</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr><tr><td>Concesion</td><td>$110.6 M</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr><tr><td>Arrendamiento</td><td>$88.5 M</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr><tr><td>Prestacion De Servicios</td><td>$77.7 M</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr><tr><td>Suministro</td><td>$76.9 M</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr></table></details>
+</div><div class="card">
+<div class="card-header">
+<h3><span class="section-num">4</span>¿El valor de contratos difiere entre fuentes SECOP (I vs II vs Integrado)?</h3>
+<span class="badge badge-reject">Se rechaza H₀</span>
+</div>
+<div class="dataset-info">Dataset: Consolidado (SECOP I + II + Integrado, 133,371 registros)</div>
+<div class="hypotheses">
+<div class="hypothesis h0"><strong>H₀ (Nula)</strong><p>El valor promedio es igual entre SECOP I, SECOP II y SECOP Integrado.</p></div>
+<div class="hypothesis h1"><strong>H₁ (Alternativa)</strong><p>Al menos una fuente tiene un valor promedio diferente.</p></div>
+</div>
+<div class="stats-grid">
+<div class="stat"><div class="stat-label">Estadístico F</div><div class="stat-value">5114.5758</div></div>
+<div class="stat"><div class="stat-label">p-value</div><div class="stat-value pval">&lt; 2.2e-16</div></div>
+<div class="stat"><div class="stat-label">Decisión (α=0.05)</div><div class="stat-value" style="font-size:0.95rem">Se rechaza H₀</div></div>
+<div class="stat"><div class="stat-label">N grupos</div><div class="stat-value">3</div></div>
+<div class="stat"><div class="stat-label">N observaciones</div><div class="stat-value">133,368</div></div>
+
+</div>
+<div class="decision decision-reject">
+<strong>Decisión: Se rechaza H₀ (p &lt; 0.05)</strong>
+Las fuentes capturan procesos con características distintas: SECOP II tiende a contratos de mayor valor que SECOP I, reflejando la migración gradual del sistema.
+
+</div>
+<div class="charts-row"><img src="boxplot_origen_consolidado.png" alt="boxplot_origen_consolidado.png" class="zoomable"><img src="bar_origen_consolidado.png" alt="bar_origen_consolidado.png" class="zoomable"></div>
+<div class="tukey-section">
+<h4>Post-hoc Tukey HSD — 3 comparaciones (3 significativas)</h4>
+<div class="tukey-grid"><div class="tukey-item sig"><span>SECOP_I vs SECOP_II</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>SECOP_I vs SECOP_INTEGRADO</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>SECOP_II vs SECOP_INTEGRADO</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div></div>
+</div>
+<details><summary>Ver medias por grupo (3 grupos)</summary><table class="means-table"><tr><th>Grupo</th><th>Valor promedio</th><th></th></tr><tr><td>SECOP_INTEGRADO</td><td>$270.0 M</td><td class="bar-cell"><div class="bar" style="width:100.0%"></div></td></tr><tr><td>SECOP_II</td><td>$218.8 M</td><td class="bar-cell"><div class="bar" style="width:81.0%"></div></td></tr><tr><td>SECOP_I</td><td>$83.9 M</td><td class="bar-cell"><div class="bar" style="width:31.1%"></div></td></tr></table></details>
+</div><div class="card">
+<div class="card-header">
+<h3><span class="section-num">5</span>¿El valor de contratos difiere según el sector de gasto? (SECOP II)</h3>
+<span class="badge badge-reject">Se rechaza H₀</span>
+</div>
+<div class="dataset-info">Dataset: SECOP II (48,310 registros con sector clasificado)</div>
+<div class="hypotheses">
+<div class="hypothesis h0"><strong>H₀ (Nula)</strong><p>El valor promedio es igual en todos los sectores (Educación, Salud, Transporte, Minas, etc.).</p></div>
+<div class="hypothesis h1"><strong>H₁ (Alternativa)</strong><p>Al menos un sector tiene un valor promedio diferente.</p></div>
+</div>
+<div class="stats-grid">
+<div class="stat"><div class="stat-label">Estadístico F</div><div class="stat-value">81.8898</div></div>
+<div class="stat"><div class="stat-label">p-value</div><div class="stat-value pval">&lt; 2.2e-16</div></div>
+<div class="stat"><div class="stat-label">Decisión (α=0.05)</div><div class="stat-value" style="font-size:0.95rem">Se rechaza H₀</div></div>
+<div class="stat"><div class="stat-label">N grupos</div><div class="stat-value">24</div></div>
+<div class="stat"><div class="stat-label">N observaciones</div><div class="stat-value">47,384</div></div>
+
+</div>
+<div class="decision decision-reject">
+<strong>Decisión: Se rechaza H₀ (p &lt; 0.05)</strong>
+Los sectores de gasto público tienen perfiles de contratación distintos: Transporte y Minas manejan contratos de mayor valor que Educación o Deportes.
+
+</div>
+<div class="charts-row"><img src="boxplot_sector_secop2.png" alt="boxplot_sector_secop2.png" class="zoomable"><img src="bar_sector_secop2.png" alt="bar_sector_secop2.png" class="zoomable"></div>
+<div class="tukey-section">
+<h4>Post-hoc Tukey HSD — 45 comparaciones (38 significativas)</h4>
+<div class="tukey-grid"><div class="tukey-item nosig"><span>Ambiente Y Desarrollo Sostenible vs Cultura</span><span style="font-weight:600">p=0.952809 ○</span></div><div class="tukey-item sig"><span>Ambiente Y Desarrollo Sostenible vs Defensa</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Ambiente Y Desarrollo Sostenible vs Deportes</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Ambiente Y Desarrollo Sostenible vs Educación Nacional</span><span style="font-weight:600">p=0.001197 ✗ sig</span></div><div class="tukey-item sig"><span>Ambiente Y Desarrollo Sostenible vs Inclusión Social Y Reconciliación</span><span style="font-weight:600">p=0.000003 ✗ sig</span></div><div class="tukey-item sig"><span>Ambiente Y Desarrollo Sostenible vs No Aplica/No Pertenece</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Ambiente Y Desarrollo Sostenible vs Salud Y Protección Social</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Ambiente Y Desarrollo Sostenible vs Servicio Público</span><span style="font-weight:600">p=0.000003 ✗ sig</span></div><div class="tukey-item sig"><span>Ambiente Y Desarrollo Sostenible vs Trabajo</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Cultura vs Defensa</span><span style="font-weight:600">p=0.000052 ✗ sig</span></div><div class="tukey-item sig"><span>Cultura vs Deportes</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Cultura vs Educación Nacional</span><span style="font-weight:600">p=0.000027 ✗ sig</span></div><div class="tukey-item sig"><span>Cultura vs Inclusión Social Y Reconciliación</span><span style="font-weight:600">p=0.013635 ✗ sig</span></div><div class="tukey-item sig"><span>Cultura vs No Aplica/No Pertenece</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Cultura vs Salud Y Protección Social</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Cultura vs Servicio Público</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Cultura vs Trabajo</span><span style="font-weight:600">p=0.006831 ✗ sig</span></div><div class="tukey-item sig"><span>Defensa vs Deportes</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item sig"><span>Defensa vs Educación Nacional</span><span style="font-weight:600">p=0.000000 ✗ sig</span></div><div class="tukey-item nosig"><span>Defensa vs Inclusión Social Y Reconciliación</span><span style="font-weight:600">p=0.980461 ○</span></div></div>
+</div>
+<details><summary>Ver medias por grupo (24 grupos)</summary><table class="means-table"><tr><th>Grupo</th><th>Valor promedio</th><th></th></tr><tr><td>Minas Y Energía</td><td>$48.4 M</td><td class="bar-cell"><div class="bar" style="width:100.0%"></div></td></tr><tr><td>Transporte</td><td>$39.5 M</td><td class="bar-cell"><div class="bar" style="width:81.6%"></div></td></tr><tr><td>Presidencia De La República</td><td>$38.2 M</td><td class="bar-cell"><div class="bar" style="width:78.8%"></div></td></tr><tr><td>Tecnologías De La Información Y Las Comunicaciones</td><td>$35.6 M</td><td class="bar-cell"><div class="bar" style="width:73.6%"></div></td></tr><tr><td>Agricultura</td><td>$32.1 M</td><td class="bar-cell"><div class="bar" style="width:66.3%"></div></td></tr><tr><td>Defensa</td><td>$32.0 M</td><td class="bar-cell"><div class="bar" style="width:66.0%"></div></td></tr><tr><td>Planeación</td><td>$30.5 M</td><td class="bar-cell"><div class="bar" style="width:63.0%"></div></td></tr><tr><td>Inclusión Social Y Reconciliación</td><td>$30.4 M</td><td class="bar-cell"><div class="bar" style="width:62.8%"></div></td></tr><tr><td>Relaciones Exteriores</td><td>$30.4 M</td><td class="bar-cell"><div class="bar" style="width:62.8%"></div></td></tr><tr><td>Trabajo</td><td>$30.2 M</td><td class="bar-cell"><div class="bar" style="width:62.5%"></div></td></tr><tr><td>Hacienda Y Crédito Público</td><td>$29.6 M</td><td class="bar-cell"><div class="bar" style="width:61.2%"></div></td></tr><tr><td>Interior</td><td>$28.8 M</td><td class="bar-cell"><div class="bar" style="width:59.4%"></div></td></tr><tr><td>Vivienda, Ciudad Y Territorio</td><td>$28.7 M</td><td class="bar-cell"><div class="bar" style="width:59.2%"></div></td></tr><tr><td>Ciencia Tecnología</td><td>$27.9 M</td><td class="bar-cell"><div class="bar" style="width:57.7%"></div></td></tr><tr><td>Industria</td><td>$26.8 M</td><td class="bar-cell"><div class="bar" style="width:55.3%"></div></td></tr><tr><td>Cultura</td><td>$25.5 M</td><td class="bar-cell"><div class="bar" style="width:52.7%"></div></td></tr><tr><td>Ambiente Y Desarrollo Sostenible</td><td>$24.0 M</td><td class="bar-cell"><div class="bar" style="width:49.6%"></div></td></tr><tr><td>Ley De Justicia</td><td>$22.1 M</td><td class="bar-cell"><div class="bar" style="width:45.6%"></div></td></tr><tr><td>Educación Nacional</td><td>$20.4 M</td><td class="bar-cell"><div class="bar" style="width:42.1%"></div></td></tr><tr><td>Servicio Público</td><td>$20.2 M</td><td class="bar-cell"><div class="bar" style="width:41.8%"></div></td></tr><tr><td>No Aplica/No Pertenece</td><td>$18.6 M</td><td class="bar-cell"><div class="bar" style="width:38.3%"></div></td></tr><tr><td>Salud Y Protección Social</td><td>$18.1 M</td><td class="bar-cell"><div class="bar" style="width:37.3%"></div></td></tr><tr><td>Deportes</td><td>$13.3 M</td><td class="bar-cell"><div class="bar" style="width:27.5%"></div></td></tr><tr><td>Información Estadística</td><td>$12.8 M</td><td class="bar-cell"><div class="bar" style="width:26.3%"></div></td></tr></table></details>
+</div><div class="card">
+<div class="card-header">
+<h3><span class="section-num">6</span>¿La modalidad afecta el valor de forma diferente según el departamento?</h3>
+<span class="badge badge-reject">Se rechaza H₀</span>
+</div>
+<div class="dataset-info">Dataset: Consolidado (SECOP I + II + Integrado, 133,371 registros)</div>
+<div class="hypotheses">
+<div class="hypothesis h0"><strong>H₀ (Nula)</strong><p>No hay interacción entre modalidad y departamento: el efecto de la modalidad sobre el valor es el mismo en todos los departamentos.</p></div>
+<div class="hypothesis h1"><strong>H₁ (Alternativa)</strong><p>Existe interacción: el efecto de la modalidad sobre el valor varía según el departamento.</p></div>
+</div>
+<div class="stats-grid">
+<div class="stat"><div class="stat-label">Estadístico F</div><div class="stat-value">261.8604</div></div>
+<div class="stat"><div class="stat-label">p-value</div><div class="stat-value pval">&lt; 2.2e-16</div></div>
+<div class="stat"><div class="stat-label">Decisión (α=0.05)</div><div class="stat-value" style="font-size:0.95rem">Se rechaza H₀</div></div>
+<div class="stat"><div class="stat-label">N grupos</div><div class="stat-value">479</div></div>
+<div class="stat"><div class="stat-label">N observaciones</div><div class="stat-value">132,861</div></div>
+<div class="stat"><div class="stat-label">R²</div><div class="stat-value">0.486</div></div>
+</div>
+<div class="decision decision-reject">
+<strong>Decisión: Se rechaza H₀ (p &lt; 0.05)</strong>
+La modalidad tiene efectos diferentes según el departamento. Algunos departamentos usan modalidades de alto valor más que otros, revelando patrones regionales de contratación.
+R² = 0.486: el modelo explica 48.6% de la varianza.
+</div>
+<div class="charts-row"><img src="interaction_modalidad_departamen.png" alt="interaction_modalidad_departamen.png" class="zoomable"></div>
+
+
+</div><div class="card">
+<div class="card-header">
+<h3><span class="section-num">7</span>¿La combinación modalidad × tipo de contrato afecta el valor? (SECOP II)</h3>
+<span class="badge badge-reject">Se rechaza H₀</span>
+</div>
+<div class="dataset-info">Dataset: SECOP II (48,310 registros)</div>
+<div class="hypotheses">
+<div class="hypothesis h0"><strong>H₀ (Nula)</strong><p>No hay interacción entre modalidad y tipo de contrato sobre el valor.</p></div>
+<div class="hypothesis h1"><strong>H₁ (Alternativa)</strong><p>La combinación de modalidad y tipo de contrato afecta el valor más allá de cada factor individual.</p></div>
+</div>
+<div class="stats-grid">
+<div class="stat"><div class="stat-label">Estadístico F</div><div class="stat-value">304.4777</div></div>
+<div class="stat"><div class="stat-label">p-value</div><div class="stat-value pval">&lt; 2.2e-16</div></div>
+<div class="stat"><div class="stat-label">Decisión (α=0.05)</div><div class="stat-value" style="font-size:0.95rem">Se rechaza H₀</div></div>
+<div class="stat"><div class="stat-label">N grupos</div><div class="stat-value">53</div></div>
+<div class="stat"><div class="stat-label">N observaciones</div><div class="stat-value">47,338</div></div>
+<div class="stat"><div class="stat-label">R²</div><div class="stat-value">0.2508</div></div>
+</div>
+<div class="decision decision-reject">
+<strong>Decisión: Se rechaza H₀ (p &lt; 0.05)</strong>
+Ciertas modalidades se asocian preferentemente a tipos de contrato de mayor valor. Por ejemplo, Licitación Pública + Obra genera contratos mucho más costosos que Mínima Cuantía + Suministro.
+R² = 0.2508: el modelo explica 25.1% de la varianza.
+</div>
+<div class="charts-row"><img src="interaction_modalidad__tipo_de_co.png" alt="interaction_modalidad__tipo_de_co.png" class="zoomable"></div>
+
+
+</div></div>
+<div class="lightbox" id="lightbox"><span class="lightbox-close">&times;</span><img src="" alt="Zoom"></div>
+<script>
+document.addEventListener('click', function(e) {
+    var lb = document.getElementById('lightbox');
+    if (e.target.classList.contains('zoomable')) {
+        lb.querySelector('img').src = e.target.src;
+        lb.classList.add('active');
+    } else if (lb.classList.contains('active') && (e.target === lb || e.target.classList.contains('lightbox-close'))) {
+        lb.classList.remove('active');
+    }
+});
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') document.getElementById('lightbox').classList.remove('active');
+});
+</script>
+<footer>
+<p>Análisis ANOVA — CiviData · Contratación Pública Colombiana (SECOP)</p>
+<p>One-way ANOVA: scipy.stats.f_oneway · Two-way ANOVA: statsmodels OLS · Post-hoc: Tukey HSD</p>
+<p>Nivel de significancia α = 0.05 · Variable dependiente: log(1 + valor_contrato)</p>
+</footer>
+</body>
+</html>

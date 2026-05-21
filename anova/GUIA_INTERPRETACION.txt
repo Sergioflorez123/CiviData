@@ -1,0 +1,339 @@
+# Guía Completa de Interpretación — Análisis ANOVA
+## Contratación Pública Colombiana (SECOP)
+
+---
+
+## 1. ¿Qué es ANOVA?
+
+ANOVA (Analysis of Variance) es un test estadístico que responde una pregunta simple:
+**¿Los valores promedio de diferentes grupos son realmente diferentes, o las diferencias que vemos son solo azar?**
+
+### Ejemplo intuitivo
+Si comparamos el valor promedio de contratos entre Antioquia y Nariño, y Antioquia promedio $469M mientras Nariño promedio $74M, la pregunta es: ¿esa diferencia de $395M es real y sistemática, o podría ser producto de la suerte en la muestra?
+
+ANOVA no compara dos grupos — compara **tres o más simultáneamente**.
+
+---
+
+## 2. Las dos hipótesis
+
+### H₀ (Hipótesis Nula)
+> "Todos los grupos tienen el mismo valor promedio."
+
+Es la posición conservadora: asume que no hay diferencia real. Solo rechazamos H₀ si la evidencia es muy fuerte.
+
+### H₁ (Hipótesis Alternativa)
+> "Al menos un grupo tiene un valor promedio diferente."
+
+No dice cuál grupo ni cuántos — solo que al menos uno se sale del patrón.
+
+### Decisión
+- **Rechazar H₀** → Hay evidencia de que los grupos difieren (p < 0.05)
+- **No rechazar H₀** → No hay evidencia suficiente para afirmar que difieren (p ≥ 0.05)
+
+El umbral α = 0.05 significa: "solo rechazamos H₀ si hay menos del 5% de probabilidad de que este resultado sea por azar."
+
+---
+
+## 3. One-way ANOVA
+
+### Qué hace
+Compara las medias de **3 o más grupos** de una sola variable categórica.
+
+**Ejemplo:** ¿El valor promedio de contratos es igual en los 33 departamentos?
+
+### Cómo funciona (intuición)
+ANOVA compara dos tipos de variación:
+
+1. **Variación ENTRE grupos (MS_between):** ¿Qué tan diferentes son las medias de los grupos entre sí?
+   - Si Antioquia promedio $469M y Nariño $74M → mucha variación entre grupos
+
+2. **Variación DENTRO de grupos (MS_within):** ¿Qué tan diferentes son los contratos dentro del mismo departamento?
+   - Si en Antioquia hay contratos de $1M y de $10B → mucha variación dentro del grupo
+
+### El estadístico F
+
+```
+F = MS_between / MS_within
+```
+
+**Interpretación de F:**
+
+| Valor de F | Qué significa |
+|---|---|
+| F ≈ 1 | La variación entre grupos es igual al ruido interno → los grupos son iguales |
+| F > 10 | Los grupos difieren bastante más que el ruido interno |
+| F > 100 | Diferencia muy fuerte entre grupos |
+| F > 1000 | Diferencia enorme |
+
+**En tus resultados:**
+
+| Variable | F | Interpretación |
+|---|---|---|
+| Origen (SECOP I vs II vs Integrado) | 5,114 | Los tres sistemas capturan contratos de mundos diferentes |
+| Tipo de contrato | 2,022 | Obras vs suministros tienen valores radicalmente distintos |
+| Modalidad | 1,381 | Licitación vs mínima cuantía manejan montos muy diferentes |
+| Departamento | 525 | Hay diferencia entre departamentos pero menos extrema |
+| Sector | 82 | Los sectores difieren, es la diferencia más "suave" |
+
+**F grande = los grupos son más diferentes entre sí de lo que varían internamente.**
+
+### El p-value
+
+El p-value responde: "Si H₀ fuera cierta (todos los grupos iguales), ¿cuál es la probabilidad de obtener un F tan grande como el que observamos?"
+
+| p-value | Interpretación |
+|---|---|
+| p < 0.05 | Muy improbable que sea azar → rechazamos H₀ |
+| p ≥ 0.05 | Podría ser azar → no rechazamos H₀ |
+
+**En tus resultados:** todos los p-values son `< 2.2e-16` (menor que el mínimo que puede representar una computadora con números de 64 bits). Esto significa que la probabilidad de que estas diferencias sean por azar es esencialmente **cero**.
+
+**Nota importante:** con 133,000+ observaciones, cualquier diferencia mínima produce p ≈ 0. Por eso el F y el R² son más informativos que el p-value para juzgar la importancia práctica.
+
+### N grupos y N observaciones
+
+- **N grupos:** cuántas categorías tiene la variable (ej: 33 departamentos)
+- **N observaciones:** cuántos contratos se usaron en el cálculo (ej: 133,368)
+
+---
+
+## 4. Two-way ANOVA
+
+### Qué hace
+Evalúa el efecto de **dos variables categóricas simultáneamente** y su **interacción**.
+
+**Ejemplo:** ¿El valor del contrato depende de la modalidad? ¿Depende del departamento? ¿Y la combinación de modalidad × departamento tiene un efecto adicional?
+
+### Los tres efectos que mide
+
+1. **Efecto principal de A:** ¿La variable A afecta el valor? (ej: ¿la modalidad afecta?)
+2. **Efecto principal de B:** ¿La variable B afecta el valor? (ej: ¿el departamento afecta?)
+3. **Efecto de interacción A×B:** ¿El efecto de A cambia según el nivel de B? (ej: ¿la modalidad afecta distinto según el departamento?)
+
+### R² (Coeficiente de determinación)
+
+R² dice: **¿Qué proporción de la variación total en el valor de contratos explica este modelo?**
+
+| R² | Interpretación |
+|---|---|
+| 0.00 | El modelo no explica nada |
+| 0.01 - 0.10 | Efecto débil — existe pero es pequeño |
+| 0.10 - 0.25 | Efecto moderado |
+| 0.25 - 0.50 | Efecto fuerte |
+| > 0.50 | Efecto muy fuerte |
+
+**En tus resultados:**
+
+| Interacción | R² | Interpretación |
+|---|---|---|
+| Modalidad × Departamento | 0.486 | El 48.6% de la variación se explica — muy fuerte. La combinación de qué modalidad usa qué departamento es un predictor poderoso del valor. |
+| Modalidad × Tipo contrato | 0.251 | El 25.1% se explica — fuerte. Ciertas modalidades se asocian a ciertos tipos de contrato de mayor valor. |
+
+**Diferencia clave con one-way:**
+- One-way ANOVA (scipy) → solo da F y p-value. No calcula R² automáticamente.
+- Two-way ANOVA (statsmodels OLS) → da F, p-value, Y R².
+
+**La diferencia entre p-value y R²:**
+- p-value → "¿Existe diferencia?" (sí/no)
+- R² → "¿Qué tan importante es esa diferencia?" (nada/mucho)
+
+Un p-value minúsculo con R² = 0.01 significa: "sí hay diferencia pero es irrelevante en la práctica."
+Un R² = 0.486 significa: "la diferencia es sustancial y vale la pena prestarle atención."
+
+---
+
+## 5. Post-hoc: Tukey HSD
+
+### Para qué sirve
+ANOVA dice "hay diferencias entre los grupos" pero **no dice cuáles grupos** son diferentes. Tukey HSD responde esa pregunta.
+
+### Cómo funciona
+Compara **todos los pares posibles** de grupos y ajusta el p-value para compensar que estamos haciendo muchas comparaciones.
+
+**¿Por qué ajustar?** Si comparás 10 departamentos entre sí, son 45 comparaciones. Con α = 0.05, esperarías encontrar ~2 "significativas" por puro azar. Tukey corrige esto.
+
+### Cómo leer cada comparación
+
+```
+Antioquia vs Nariño    | p=0.000001  ✗ sig  (borde rojo)
+Caldas vs Risaralda    | p=0.340000  ○      (borde verde)
+```
+
+- **✗ sig (rojo):** La diferencia entre esos dos grupos es estadísticamente significativa. Sus medias son realmente distintas.
+- **○ (verde):** No hay evidencia de diferencia. Sus medias podrían ser iguales.
+
+### En tus resultados
+
+| Variable | Comparaciones totales | Significativas |
+|---|---|---|
+| Departamento | 45 | 42 (93%) |
+| Modalidad | 45 | 39 (87%) |
+| Tipo contrato | 45 | 43 (96%) |
+| Origen | 3 | 3 (100%) |
+| Sector | 45 | 38 (84%) |
+
+**Interpretación:** La mayoría de los pares de grupos son significativamente diferentes. Las comparaciones verdes son los pocos pares donde los valores promedio **no** se pueden distinguir.
+
+---
+
+## 6. La transformación logarítmica
+
+### Por qué se usa
+Los valores de contratos van desde ~$1 millón hasta ~$27 mil millones. Esa escala es tan asimétrica que:
+- En un gráfico lineal, todos los contratos pequeños se aplastan contra el eje X
+- La media se distorsiona por unos pocos valores extremos
+- Los tests estadísticos asumen distribución normal, y los valores crudos no la tienen
+
+### Qué es log(1 + valor_contrato)
+Aplica el logaritmo natural a cada valor sumándole 1 (para que log(0) no sea infinito).
+
+**Equivalencia aproximada:**
+
+| log(1+valor) | Valor en COP |
+|---|---|
+| 13 | ~$440 mil |
+| 15 | ~$3.3 millones |
+| 17 | ~$24 millones |
+| 19 | ~$178 millones |
+| 21 | ~$1.3 mil millones |
+| 23 | ~$10 mil millones |
+| 25 | ~$72 mil millones |
+
+**Regla práctica:** cada 2 unidades de diferencia en el eje Y ≈ un factor de ~7.4x en valor real.
+
+### Los gráficos usan log, los tests usan log
+Todo el análisis — ANOVA, Tukey, boxplots, barplots — trabaja sobre la escala logarítmica. Esto no cambia las conclusiones, solo hace que sean visibles y válidas estadísticamente.
+
+---
+
+## 7. Cómo interpretar los gráficos
+
+### Boxplots (cajas y bigotes)
+
+Muestran la **distribución completa** de valores por grupo:
+
+- **Línea central dentro de la caja** = mediana (el valor del medio)
+- **Caja** = rango intercuartílico (IQR): contiene el 50% central de los datos
+  - Borde inferior de la caja = Q1 (25% de los datos están por debajo)
+  - Borde superior de la caja = Q3 (75% de los datos están por debajo)
+- **Bigotes** (las líneas que salen de la caja) = rango de valores no atípicos (1.5×IQR)
+- **Caja más alta** = ese grupo tiene contratos de mayor valor en general
+- **Caja más alta y ancha** = más variabilidad dentro del grupo
+
+**Cómo comparar visualmente:**
+- Si las cajas de dos grupos **no se superponen** → hay una diferencia real y sustantiva
+- Si las cajas **se superponen mucho** → los grupos son similares (aunque ANOVA puede detectar diferencias sutiles con muestras grandes)
+- Si una caja está **muy arriba** pero es **muy estrecha** → ese grupo tiene valores consistentemente altos
+- Si una caja está **muy abajo** pero es **muy ancha** → ese grupo tiene valores muy dispersos
+
+**En departamento:** casi todas las cajas se superponen porque la variación dentro de cada departamento es enorme (hay contratos de $1M y de $10B en todos). Pero las medianas están ligeramente desplazadas, y con 133k observaciones, ANOVA detecta ese desplazamiento.
+
+### Barplots (barras con error bars)
+
+Muestran la **media** (promedio) de cada grupo con su intervalo de confianza:
+
+- **Altura de la barra** = valor promedio del grupo (en escala log)
+- **Líneas verticales** (error bars) = intervalo de confianza del 95%
+  - Si los error bars de dos barras **no se superponen** → la diferencia es estadísticamente confiable
+  - Si **se superponen** → la diferencia podría no ser real
+
+**Diferencia con boxplot:**
+- Boxplot → muestra la distribución completa (mediana, cuartiles, outliers)
+- Barplot → muestra solo la media y su precisión
+
+**Cuándo usar cada uno:**
+- Boxplot para ver la forma de la distribución
+- Barplot para comparar rápidamente "cuál grupo es mayor"
+
+### Interaction plots (líneas)
+
+Muestran cómo el efecto de **un factor cambia según el nivel de otro factor**.
+
+- Cada **línea** = una categoría del primer factor (ej: una modalidad)
+- El **eje X** = categorías del segundo factor (ej: departamentos)
+- El **eje Y** = valor promedio (en escala log)
+
+**Cómo interpretar:**
+- **Líneas paralelas** → no hay interacción (la modalidad afecta igual en todos los departamentos)
+- **Líneas que se cruzan** → hay interacción fuerte (el ranking de modalidades cambia según el departamento)
+- **Líneas que divergen** → la diferencia entre modalidades es mayor en algunos departamentos
+- **Líneas juntas** → modalidades con valores similares
+
+**Por qué líneas y no barras:** con 2 factores tienes una matriz de medias. Las líneas permiten ver patrones de cruce y divergencia de un vistazo. Con barras necesitarías un grouped bar chart con decenas de grupos que sería ilegible.
+
+**Puntos sueltos sin línea:** significan que esa combinación específica de factores existe en los datos pero no tiene vecinos para conectar. Por ejemplo, si "Licitación Pública" aparece en Antioquia y Bogotá pero no en Arauca, la línea se interrumpe en Arauca. Esto refleja la realidad: no todas las modalidades se usan en todos los departamentos.
+
+---
+
+## 8. Estructura de cada hipótesis en la presentación
+
+Cada una de las 7 hipótesis sigue esta estructura:
+
+### 1. Título (pregunta)
+Formula la pregunta que se está respondiendo.
+> "¿El valor de contratos difiere entre departamentos?"
+
+### 2. H₀ y H₁
+- **H₀ (Nula):** El valor promedio es igual en todos los grupos.
+- **H₁ (Alternativa):** Al menos un grupo tiene un valor promedio diferente.
+
+### 3. Dataset
+Qué datos se usaron y cuántas observaciones.
+> "Consolidado (SECOP I + II + Integrado) · 133,368 observaciones · 33 grupos"
+
+### 4. Estadísticas
+- **F:** qué tan diferentes son los grupos entre sí vs. dentro de sí
+- **p-value:** probabilidad de que esto sea azar
+- **Decisión:** rechazar o no rechazar H₀
+- **R²:** (solo two-way) qué proporción de varianza explica el modelo
+- **Tukey sig.:** (solo one-way) cuántas comparaciones post-hoc son significativas
+
+### 5. Interpretación
+Explicación en lenguaje natural de qué significa el resultado.
+
+### 6. Gráficos
+- One-way → boxplot + barplot
+- Two-way → interaction plot
+
+### 7. Post-hoc Tukey (one-way)
+Lista de comparaciones entre pares de grupos con su p-value ajustado.
+
+### 8. Medias por grupo (expandible)
+Tabla con el valor promedio de cada grupo, ordenada de mayor a menor, con barras visuales de proporción.
+
+---
+
+## 9. Resumen de las 7 hipótesis
+
+| # | Pregunta | Dataset | F | p-value | R² | Decisión |
+|---|---|---|---|---|---|---|
+| 1 | ¿Difiere por departamento? | Consolidado (133k) | 525 | < 2.2e-16 | — | Rechazar H₀ |
+| 2 | ¿Difiere por modalidad? | Consolidado (133k) | 1,381 | < 2.2e-16 | — | Rechazar H₀ |
+| 3 | ¿Difiere por tipo contrato? | Consolidado (133k) | 2,022 | < 2.2e-16 | — | Rechazar H₀ |
+| 4 | ¿Difiere por fuente SECOP? | Consolidado (133k) | 5,115 | < 2.2e-16 | — | Rechazar H₀ |
+| 5 | ¿Difiere por sector? | SECOP II (48k) | 82 | < 2.2e-16 | — | Rechazar H₀ |
+| 6 | ¿Interacción modalidad × depto? | Consolidado (133k) | 262 | < 2.2e-16 | 0.486 | Rechazar H₀ |
+| 7 | ¿Interacción modalidad × tipo? | SECOP II (48k) | 304 | < 2.2e-16 | 0.251 | Rechazar H₀ |
+
+**Todas rechazan H₀.** Hay diferencias estadísticamente significativas en todos los casos.
+
+**Las más importantes en la práctica (por F y R²):**
+1. Origen (F=5,115) → SECOP I, II e Integrado son radicalmente distintos
+2. Tipo de contrato (F=2,022) → obras vs suministros son mundos diferentes
+3. Modalidad × Departamento (R²=0.486) → casi la mitad de la varianza se explica por esta combinación
+
+---
+
+## 10. Cómo explicar todo esto a alguien que no sabe estadística
+
+> "Hicimos un análisis llamado ANOVA que compara si los valores promedio de contratos son diferentes entre grupos. Por ejemplo: ¿los departamentos contratan por montos distintos? ¿las licitaciones son más caras que la mínima cuantía?"
+
+> "El resultado es que **sí hay diferencias en todos los casos**. Pero 'significativo' no siempre significa 'importante'. Para medir qué tan importante es, usamos dos números:"
+
+> "- **F** nos dice qué tan diferentes son los grupos entre sí comparado con el ruido interno. F más alto = diferencia más clara."
+> "- **R²** nos dice qué porcentaje de la diferencia total explica el modelo. R² de 0.49 significa que casi la mitad de la variación en los valores se explica por saber qué modalidad usa qué departamento."
+
+> "Los gráficos de cajas muestran cómo se distribuyen los valores en cada grupo. Los de barras muestran el promedio. Los de líneas muestran cómo cambia el efecto de un factor según otro."
+
+> "El test de Tukey nos dice exactamente cuáles pares de grupos son diferentes. De 45 comparaciones entre departamentos, 42 son significativas — la mayoría de los departamentos tienen patrones de contratación distintos."

@@ -1,0 +1,1674 @@
+{
+  "timestamp": "2026-05-21T00:19:11.375072",
+  "anova_results": [
+    {
+      "test": "One-way ANOVA",
+      "group_col": "departamento",
+      "f_statistic": 525.4773,
+      "p_value": 0.0,
+      "p_value_display": "&lt; 2.2e-16",
+      "significant": true,
+      "n_groups": 33,
+      "n_total": 133368,
+      "group_sizes": {
+        "Amazonas": 382,
+        "Antioquia": 18720,
+        "Arauca": 858,
+        "Atlántico": 3124,
+        "Bogotá D.C.": 25005,
+        "Bolívar": 2895,
+        "Boyacá": 3546,
+        "Caldas": 3353,
+        "Caquetá": 640,
+        "Casanare": 1516,
+        "Cauca": 2132,
+        "Cesar": 3887,
+        "Chocó": 576,
+        "Cundinamarca": 9625,
+        "Córdoba": 1455,
+        "Guainía": 84,
+        "Guaviare": 398,
+        "Huila": 3417,
+        "La Guajira": 869,
+        "Magdalena": 2938,
+        "Meta": 2504,
+        "Nariño": 4480,
+        "Norte de Santander": 2932,
+        "Putumayo": 896,
+        "Quindío": 1746,
+        "Risaralda": 1901,
+        "San Andrés, Providencia Y Santa Catalina": 579,
+        "Santander": 15542,
+        "Sucre": 1516,
+        "Tolima": 6799,
+        "Valle del Cauca": 8595,
+        "Vaupés": 155,
+        "Vichada": 303
+      },
+      "group_means_cop": {
+        "Amazonas": 115978898.95,
+        "Antioquia": 469279464.13,
+        "Arauca": 59834933.44,
+        "Atlántico": 110891658.39,
+        "Bogotá D.C.": 342290994.06,
+        "Bolívar": 143415663.33,
+        "Boyacá": 148376441.98,
+        "Caldas": 124438847.23,
+        "Caquetá": 176920892.2,
+        "Casanare": 139477790.28,
+        "Cauca": 148123815.42,
+        "Cesar": 107336264.55,
+        "Chocó": 216403091.02,
+        "Cundinamarca": 119663619.15,
+        "Córdoba": 164775628.02,
+        "Guainía": 138144451.24,
+        "Guaviare": 116712701.53,
+        "Huila": 214840788.16,
+        "La Guajira": 117325732.96,
+        "Magdalena": 59722962.99,
+        "Meta": 127773226.44,
+        "Nariño": 73625869.27,
+        "Norte de Santander": 101651630.63,
+        "Putumayo": 101820980.79,
+        "Quindío": 85449187.52,
+        "Risaralda": 126549531.39,
+        "San Andrés, Providencia Y Santa Catalina": 138831694.98,
+        "Santander": 104611256.2,
+        "Sucre": 90897521.28,
+        "Tolima": 77959073.42,
+        "Valle del Cauca": 131646522.21,
+        "Vaupés": 243975472.94,
+        "Vichada": 105222579.14
+      },
+      "dataset": "Consolidado (SECOP I + II + Integrado, 133,371 registros)"
+    },
+    {
+      "test": "One-way ANOVA",
+      "group_col": "modalidad",
+      "f_statistic": 1381.1753,
+      "p_value": 0.0,
+      "p_value_display": "&lt; 2.2e-16",
+      "significant": true,
+      "n_groups": 29,
+      "n_total": 133322,
+      "group_sizes": {
+        "Concurso De Meritos Abierto": 203,
+        "Concurso De Méritos Abierto": 549,
+        "Concurso De Méritos Con Lista Corta": 102,
+        "Contratacion Directa (Ley 1150 De 2007)": 21294,
+        "Contratacion Minima Cuantia": 4486,
+        "Contratación Directa": 42917,
+        "Contratación Directa (Con Ofertas)": 809,
+        "Contratación Directa (Ley 1150 De 2007)": 15536,
+        "Contratación Directa Menor Cuantía": 67,
+        "Contratación Mínima Cuantía": 3499,
+        "Contratación Régimen Especial": 7278,
+        "Contratación Régimen Especial (Con Ofertas)": 468,
+        "Contratos Y Convenios Con Mas De Dos Partes": 565,
+        "Contratos Y Convenios Con Más De Dos Partes": 151,
+        "Licitacion Obra Publica": 134,
+        "Licitacion Publica": 173,
+        "Licitación Obra Pública": 81,
+        "Licitación Pública": 704,
+        "Licitación Pública Obra Publica": 82,
+        "Mínima Cuantía": 3084,
+        "Regimen Especial": 16996,
+        "Régimen Especial": 10809,
+        "Seleccion Abreviada De Menor Cuantia (Ley 1150 De 2007)": 677,
+        "Seleccion Abreviada Menor Cuantia Sin Manifestacion Interes": 14,
+        "Selección Abreviada De Menor Cuantía": 609,
+        "Selección Abreviada De Menor Cuantía (Ley 1150 De 2007)": 661,
+        "Selección Abreviada Servicios De Salud": 13,
+        "Selección Abreviada Subasta Inversa": 563,
+        "Subasta": 798
+      },
+      "group_means_cop": {
+        "Concurso De Meritos Abierto": 1144054551.95,
+        "Concurso De Méritos Abierto": 2144297203.59,
+        "Concurso De Méritos Con Lista Corta": 12972112576.79,
+        "Contratacion Directa (Ley 1150 De 2007)": 95359689.86,
+        "Contratacion Minima Cuantia": 131624818.97,
+        "Contratación Directa": 192915850.16,
+        "Contratación Directa (Con Ofertas)": 823112991.95,
+        "Contratación Directa (Ley 1150 De 2007)": 142968422.34,
+        "Contratación Directa Menor Cuantía": 664559958.18,
+        "Contratación Mínima Cuantía": 95271069.1,
+        "Contratación Régimen Especial": 199012561.61,
+        "Contratación Régimen Especial (Con Ofertas)": 1312232891.29,
+        "Contratos Y Convenios Con Mas De Dos Partes": 177788037.43,
+        "Contratos Y Convenios Con Más De Dos Partes": 1214542949.38,
+        "Licitacion Obra Publica": 11860221754.68,
+        "Licitacion Publica": 7593895051.1,
+        "Licitación Obra Pública": 10490572940.0,
+        "Licitación Pública": 11467235121.26,
+        "Licitación Pública Obra Publica": 27759671842.08,
+        "Mínima Cuantía": 178793557.01,
+        "Regimen Especial": 46991614.9,
+        "Régimen Especial": 745120816.67,
+        "Seleccion Abreviada De Menor Cuantia (Ley 1150 De 2007)": 1207249133.05,
+        "Seleccion Abreviada Menor Cuantia Sin Manifestacion Interes": 2376560018.31,
+        "Selección Abreviada De Menor Cuantía": 2094028908.32,
+        "Selección Abreviada De Menor Cuantía (Ley 1150 De 2007)": 708295461.4,
+        "Selección Abreviada Servicios De Salud": 17948631248.62,
+        "Selección Abreviada Subasta Inversa": 2171426297.78,
+        "Subasta": 1023305143.5
+      },
+      "dataset": "Consolidado (SECOP I + II + Integrado, 133,371 registros)"
+    },
+    {
+      "test": "One-way ANOVA",
+      "group_col": "tipo_contrato",
+      "f_statistic": 2021.9282,
+      "p_value": 0.0,
+      "p_value_display": "&lt; 2.2e-16",
+      "significant": true,
+      "n_groups": 23,
+      "n_total": 133316,
+      "group_sizes": {
+        "Acuerdo Marco": 24,
+        "Arrendamiento": 513,
+        "Arrendamiento De Inmuebles": 433,
+        "Arrendamiento De Muebles": 26,
+        "Comodato": 49,
+        "Compraventa": 4284,
+        "Concesion": 12,
+        "Consultoria": 271,
+        "Consultoría": 556,
+        "Credito": 20,
+        "Crédito": 64,
+        "Decreto 092 De 2017": 1787,
+        "Interventoria": 215,
+        "Interventoría": 401,
+        "No Definido": 27,
+        "Obra": 3706,
+        "Otro": 1901,
+        "Otro Tipo De Contrato": 7803,
+        "Prestacion De Servicios": 33505,
+        "Prestación De Servicios": 67842,
+        "Seguros": 95,
+        "Suministro": 8329,
+        "Suministros": 1453
+      },
+      "group_means_cop": {
+        "Acuerdo Marco": 202953157.74,
+        "Arrendamiento": 88450354.04,
+        "Arrendamiento De Inmuebles": 301943001.31,
+        "Arrendamiento De Muebles": 148762387.26,
+        "Comodato": 131228326.8,
+        "Compraventa": 141933314.73,
+        "Concesion": 110554999.05,
+        "Consultoria": 430161347.54,
+        "Consultoría": 1548881721.29,
+        "Credito": 5486547496.4,
+        "Crédito": 260063357705.11,
+        "Decreto 092 De 2017": 191042052.42,
+        "Interventoria": 629464092.15,
+        "Interventoría": 1101315700.65,
+        "No Definido": 299732995.18,
+        "Obra": 1102907309.03,
+        "Otro": 1584489494.44,
+        "Otro Tipo De Contrato": 2791693620.54,
+        "Prestacion De Servicios": 77714099.45,
+        "Prestación De Servicios": 158691628.47,
+        "Seguros": 816182676.56,
+        "Suministro": 76937384.75,
+        "Suministros": 380139782.34
+      },
+      "dataset": "Consolidado (SECOP I + II + Integrado, 133,371 registros)"
+    },
+    {
+      "test": "One-way ANOVA",
+      "group_col": "origen",
+      "f_statistic": 5114.5758,
+      "p_value": 0.0,
+      "p_value_display": "&lt; 2.2e-16",
+      "significant": true,
+      "n_groups": 3,
+      "n_total": 133368,
+      "group_sizes": {
+        "SECOP_I": 44871,
+        "SECOP_II": 47384,
+        "SECOP_INTEGRADO": 41113
+      },
+      "group_means_cop": {
+        "SECOP_I": 83931262.35,
+        "SECOP_II": 218807128.67,
+        "SECOP_INTEGRADO": 270026615.49
+      },
+      "dataset": "Consolidado (SECOP I + II + Integrado, 133,371 registros)"
+    },
+    {
+      "test": "One-way ANOVA",
+      "group_col": "sector",
+      "f_statistic": 81.8898,
+      "p_value": 0.0,
+      "p_value_display": "&lt; 2.2e-16",
+      "significant": true,
+      "n_groups": 24,
+      "n_total": 47384,
+      "group_sizes": {
+        "Agricultura": 942,
+        "Ambiente Y Desarrollo Sostenible": 2041,
+        "Ciencia Tecnología": 120,
+        "Cultura": 1283,
+        "Defensa": 2117,
+        "Deportes": 1765,
+        "Educación Nacional": 2532,
+        "Hacienda Y Crédito Público": 559,
+        "Inclusión Social Y Reconciliación": 1575,
+        "Industria": 519,
+        "Información Estadística": 1079,
+        "Interior": 294,
+        "Ley De Justicia": 858,
+        "Minas Y Energía": 390,
+        "No Aplica/No Pertenece": 7006,
+        "Planeación": 629,
+        "Presidencia De La República": 206,
+        "Relaciones Exteriores": 52,
+        "Salud Y Protección Social": 6856,
+        "Servicio Público": 11782,
+        "Tecnologías De La Información Y Las Comunicaciones": 391,
+        "Trabajo": 2382,
+        "Transporte": 1281,
+        "Vivienda, Ciudad Y Territorio": 725
+      },
+      "group_means_cop": {
+        "Agricultura": 32101019.67,
+        "Ambiente Y Desarrollo Sostenible": 24001909.38,
+        "Ciencia Tecnología": 27906033.24,
+        "Cultura": 25510970.15,
+        "Defensa": 31959953.33,
+        "Deportes": 13329369.1,
+        "Educación Nacional": 20388683.22,
+        "Hacienda Y Crédito Público": 29613774.79,
+        "Inclusión Social Y Reconciliación": 30407541.18,
+        "Industria": 26769756.71,
+        "Información Estadística": 12753917.89,
+        "Interior": 28754403.89,
+        "Ley De Justicia": 22074372.2,
+        "Minas Y Energía": 48404580.8,
+        "No Aplica/No Pertenece": 18562853.9,
+        "Planeación": 30494379.24,
+        "Presidencia De La República": 38151495.32,
+        "Relaciones Exteriores": 30385001.75,
+        "Salud Y Protección Social": 18075493.75,
+        "Servicio Público": 20249169.28,
+        "Tecnologías De La Información Y Las Comunicaciones": 35645176.84,
+        "Trabajo": 30246583.26,
+        "Transporte": 39498785.22,
+        "Vivienda, Ciudad Y Territorio": 28664896.09
+      },
+      "dataset": "SECOP II (48,310 registros con sector clasificado)"
+    },
+    {
+      "test": "Two-way ANOVA",
+      "factors": "modalidad + departamento",
+      "r_squared": 0.486,
+      "f_statistic": 261.8604,
+      "p_value": 0.0,
+      "p_value_display": "&lt; 2.2e-16",
+      "significant": true,
+      "n_obs": 132861,
+      "n_groups": 479,
+      "dataset": "Consolidado (SECOP I + II + Integrado, 133,371 registros)"
+    },
+    {
+      "test": "Two-way ANOVA",
+      "factors": "modalidad_de_contratacion + tipo_de_contrato",
+      "r_squared": 0.2508,
+      "f_statistic": 304.4777,
+      "p_value": 0.0,
+      "p_value_display": "&lt; 2.2e-16",
+      "significant": true,
+      "n_obs": 47338,
+      "n_groups": 53,
+      "dataset": "SECOP II (48,310 registros)"
+    }
+  ],
+  "tukey_results": [
+    {
+      "group_col": "departamento",
+      "n_comparisons": 45,
+      "significant_comparisons": 42,
+      "comparisons": [
+        {
+          "group_1": "Antioquia",
+          "group_2": "Bogotá D.C.",
+          "mean_diff": -0.3155,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Antioquia",
+          "group_2": "Boyacá",
+          "mean_diff": -1.1514,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Antioquia",
+          "group_2": "Cesar",
+          "mean_diff": -1.4752,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Antioquia",
+          "group_2": "Cundinamarca",
+          "mean_diff": -1.3665,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Antioquia",
+          "group_2": "Huila",
+          "mean_diff": -0.7813,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Antioquia",
+          "group_2": "Nariño",
+          "mean_diff": -1.8522,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Antioquia",
+          "group_2": "Santander",
+          "mean_diff": -1.5009,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Antioquia",
+          "group_2": "Tolima",
+          "mean_diff": -1.795,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Antioquia",
+          "group_2": "Valle del Cauca",
+          "mean_diff": -1.2711,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Bogotá D.C.",
+          "group_2": "Boyacá",
+          "mean_diff": -0.8359,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Bogotá D.C.",
+          "group_2": "Cesar",
+          "mean_diff": -1.1597,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Bogotá D.C.",
+          "group_2": "Cundinamarca",
+          "mean_diff": -1.051,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Bogotá D.C.",
+          "group_2": "Huila",
+          "mean_diff": -0.4658,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Bogotá D.C.",
+          "group_2": "Nariño",
+          "mean_diff": -1.5367,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Bogotá D.C.",
+          "group_2": "Santander",
+          "mean_diff": -1.1854,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Bogotá D.C.",
+          "group_2": "Tolima",
+          "mean_diff": -1.4795,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Bogotá D.C.",
+          "group_2": "Valle del Cauca",
+          "mean_diff": -0.9555,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Boyacá",
+          "group_2": "Cesar",
+          "mean_diff": -0.3238,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Boyacá",
+          "group_2": "Cundinamarca",
+          "mean_diff": -0.2151,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Boyacá",
+          "group_2": "Huila",
+          "mean_diff": 0.3701,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Boyacá",
+          "group_2": "Nariño",
+          "mean_diff": -0.7008,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Boyacá",
+          "group_2": "Santander",
+          "mean_diff": -0.3495,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Boyacá",
+          "group_2": "Tolima",
+          "mean_diff": -0.6436,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Boyacá",
+          "group_2": "Valle del Cauca",
+          "mean_diff": -0.1196,
+          "p_adj": 0.04892,
+          "significant": true
+        },
+        {
+          "group_1": "Cesar",
+          "group_2": "Cundinamarca",
+          "mean_diff": 0.1087,
+          "p_adj": 0.07465,
+          "significant": false
+        },
+        {
+          "group_1": "Cesar",
+          "group_2": "Huila",
+          "mean_diff": 0.6939,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Cesar",
+          "group_2": "Nariño",
+          "mean_diff": -0.377,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Cesar",
+          "group_2": "Santander",
+          "mean_diff": -0.0257,
+          "p_adj": 0.999083,
+          "significant": false
+        },
+        {
+          "group_1": "Cesar",
+          "group_2": "Tolima",
+          "mean_diff": -0.3198,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Cesar",
+          "group_2": "Valle del Cauca",
+          "mean_diff": 0.2042,
+          "p_adj": 1e-06,
+          "significant": true
+        },
+        {
+          "group_1": "Cundinamarca",
+          "group_2": "Huila",
+          "mean_diff": 0.5852,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Cundinamarca",
+          "group_2": "Nariño",
+          "mean_diff": -0.4857,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Cundinamarca",
+          "group_2": "Santander",
+          "mean_diff": -0.1344,
+          "p_adj": 2e-06,
+          "significant": true
+        },
+        {
+          "group_1": "Cundinamarca",
+          "group_2": "Tolima",
+          "mean_diff": -0.4285,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Cundinamarca",
+          "group_2": "Valle del Cauca",
+          "mean_diff": 0.0954,
+          "p_adj": 0.023459,
+          "significant": true
+        },
+        {
+          "group_1": "Huila",
+          "group_2": "Nariño",
+          "mean_diff": -1.0709,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Huila",
+          "group_2": "Santander",
+          "mean_diff": -0.7196,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Huila",
+          "group_2": "Tolima",
+          "mean_diff": -1.0137,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Huila",
+          "group_2": "Valle del Cauca",
+          "mean_diff": -0.4898,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Nariño",
+          "group_2": "Santander",
+          "mean_diff": 0.3513,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Nariño",
+          "group_2": "Tolima",
+          "mean_diff": 0.0572,
+          "p_adj": 0.861758,
+          "significant": false
+        },
+        {
+          "group_1": "Nariño",
+          "group_2": "Valle del Cauca",
+          "mean_diff": 0.5811,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Santander",
+          "group_2": "Tolima",
+          "mean_diff": -0.2941,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Santander",
+          "group_2": "Valle del Cauca",
+          "mean_diff": 0.2299,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Tolima",
+          "group_2": "Valle del Cauca",
+          "mean_diff": 0.5239,
+          "p_adj": 0.0,
+          "significant": true
+        }
+      ]
+    },
+    {
+      "group_col": "modalidad",
+      "n_comparisons": 45,
+      "significant_comparisons": 39,
+      "comparisons": [
+        {
+          "group_1": "Contratacion Directa (Ley 1150 De 2007)",
+          "group_2": "Contratacion Minima Cuantia",
+          "mean_diff": 0.3223,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratacion Directa (Ley 1150 De 2007)",
+          "group_2": "Contratación Directa",
+          "mean_diff": 0.7046,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratacion Directa (Ley 1150 De 2007)",
+          "group_2": "Contratación Directa (Con Ofertas)",
+          "mean_diff": 2.1554,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratacion Directa (Ley 1150 De 2007)",
+          "group_2": "Contratación Directa (Ley 1150 De 2007)",
+          "mean_diff": 0.405,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratacion Directa (Ley 1150 De 2007)",
+          "group_2": "Contratación Mínima Cuantía",
+          "mean_diff": -0.0009,
+          "p_adj": 1.0,
+          "significant": false
+        },
+        {
+          "group_1": "Contratacion Directa (Ley 1150 De 2007)",
+          "group_2": "Contratación Régimen Especial",
+          "mean_diff": 0.7357,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratacion Directa (Ley 1150 De 2007)",
+          "group_2": "Mínima Cuantía",
+          "mean_diff": 0.6286,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratacion Directa (Ley 1150 De 2007)",
+          "group_2": "Regimen Especial",
+          "mean_diff": -0.7077,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratacion Directa (Ley 1150 De 2007)",
+          "group_2": "Régimen Especial",
+          "mean_diff": 2.0559,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratacion Minima Cuantia",
+          "group_2": "Contratación Directa",
+          "mean_diff": 0.3823,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratacion Minima Cuantia",
+          "group_2": "Contratación Directa (Con Ofertas)",
+          "mean_diff": 1.8331,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratacion Minima Cuantia",
+          "group_2": "Contratación Directa (Ley 1150 De 2007)",
+          "mean_diff": 0.0827,
+          "p_adj": 0.098514,
+          "significant": false
+        },
+        {
+          "group_1": "Contratacion Minima Cuantia",
+          "group_2": "Contratación Mínima Cuantía",
+          "mean_diff": -0.3232,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratacion Minima Cuantia",
+          "group_2": "Contratación Régimen Especial",
+          "mean_diff": 0.4134,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratacion Minima Cuantia",
+          "group_2": "Mínima Cuantía",
+          "mean_diff": 0.3063,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratacion Minima Cuantia",
+          "group_2": "Regimen Especial",
+          "mean_diff": -1.03,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratacion Minima Cuantia",
+          "group_2": "Régimen Especial",
+          "mean_diff": 1.7336,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Directa",
+          "group_2": "Contratación Directa (Con Ofertas)",
+          "mean_diff": 1.4508,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Directa",
+          "group_2": "Contratación Directa (Ley 1150 De 2007)",
+          "mean_diff": -0.2996,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Directa",
+          "group_2": "Contratación Mínima Cuantía",
+          "mean_diff": -0.7055,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Directa",
+          "group_2": "Contratación Régimen Especial",
+          "mean_diff": 0.0311,
+          "p_adj": 0.903297,
+          "significant": false
+        },
+        {
+          "group_1": "Contratación Directa",
+          "group_2": "Mínima Cuantía",
+          "mean_diff": -0.076,
+          "p_adj": 0.298445,
+          "significant": false
+        },
+        {
+          "group_1": "Contratación Directa",
+          "group_2": "Regimen Especial",
+          "mean_diff": -1.4123,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Directa",
+          "group_2": "Régimen Especial",
+          "mean_diff": 1.3513,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Directa (Con Ofertas)",
+          "group_2": "Contratación Directa (Ley 1150 De 2007)",
+          "mean_diff": -1.7505,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Directa (Con Ofertas)",
+          "group_2": "Contratación Mínima Cuantía",
+          "mean_diff": -2.1564,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Directa (Con Ofertas)",
+          "group_2": "Contratación Régimen Especial",
+          "mean_diff": -1.4197,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Directa (Con Ofertas)",
+          "group_2": "Mínima Cuantía",
+          "mean_diff": -1.5269,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Directa (Con Ofertas)",
+          "group_2": "Regimen Especial",
+          "mean_diff": -2.8631,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Directa (Con Ofertas)",
+          "group_2": "Régimen Especial",
+          "mean_diff": -0.0995,
+          "p_adj": 0.829501,
+          "significant": false
+        },
+        {
+          "group_1": "Contratación Directa (Ley 1150 De 2007)",
+          "group_2": "Contratación Mínima Cuantía",
+          "mean_diff": -0.4059,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Directa (Ley 1150 De 2007)",
+          "group_2": "Contratación Régimen Especial",
+          "mean_diff": 0.3307,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Directa (Ley 1150 De 2007)",
+          "group_2": "Mínima Cuantía",
+          "mean_diff": 0.2236,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Directa (Ley 1150 De 2007)",
+          "group_2": "Regimen Especial",
+          "mean_diff": -1.1127,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Directa (Ley 1150 De 2007)",
+          "group_2": "Régimen Especial",
+          "mean_diff": 1.6509,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Mínima Cuantía",
+          "group_2": "Contratación Régimen Especial",
+          "mean_diff": 0.7366,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Mínima Cuantía",
+          "group_2": "Mínima Cuantía",
+          "mean_diff": 0.6295,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Mínima Cuantía",
+          "group_2": "Regimen Especial",
+          "mean_diff": -0.7068,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Mínima Cuantía",
+          "group_2": "Régimen Especial",
+          "mean_diff": 2.0568,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Régimen Especial",
+          "group_2": "Mínima Cuantía",
+          "mean_diff": -0.1071,
+          "p_adj": 0.082452,
+          "significant": false
+        },
+        {
+          "group_1": "Contratación Régimen Especial",
+          "group_2": "Regimen Especial",
+          "mean_diff": -1.4434,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Contratación Régimen Especial",
+          "group_2": "Régimen Especial",
+          "mean_diff": 1.3202,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Mínima Cuantía",
+          "group_2": "Regimen Especial",
+          "mean_diff": -1.3363,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Mínima Cuantía",
+          "group_2": "Régimen Especial",
+          "mean_diff": 1.4273,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Regimen Especial",
+          "group_2": "Régimen Especial",
+          "mean_diff": 2.7636,
+          "p_adj": 0.0,
+          "significant": true
+        }
+      ]
+    },
+    {
+      "group_col": "tipo_contrato",
+      "n_comparisons": 45,
+      "significant_comparisons": 43,
+      "comparisons": [
+        {
+          "group_1": "Compraventa",
+          "group_2": "Consultoría",
+          "mean_diff": 2.3899,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Compraventa",
+          "group_2": "Decreto 092 De 2017",
+          "mean_diff": 0.2971,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Compraventa",
+          "group_2": "Obra",
+          "mean_diff": 2.0503,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Compraventa",
+          "group_2": "Otro",
+          "mean_diff": 2.4127,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Compraventa",
+          "group_2": "Otro Tipo De Contrato",
+          "mean_diff": 2.979,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Compraventa",
+          "group_2": "Prestacion De Servicios",
+          "mean_diff": -0.6023,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Compraventa",
+          "group_2": "Prestación De Servicios",
+          "mean_diff": 0.1116,
+          "p_adj": 0.000622,
+          "significant": true
+        },
+        {
+          "group_1": "Compraventa",
+          "group_2": "Suministro",
+          "mean_diff": -0.6124,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Compraventa",
+          "group_2": "Suministros",
+          "mean_diff": 0.9852,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Consultoría",
+          "group_2": "Decreto 092 De 2017",
+          "mean_diff": -2.0928,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Consultoría",
+          "group_2": "Obra",
+          "mean_diff": -0.3396,
+          "p_adj": 0.000214,
+          "significant": true
+        },
+        {
+          "group_1": "Consultoría",
+          "group_2": "Otro",
+          "mean_diff": 0.0227,
+          "p_adj": 1.0,
+          "significant": false
+        },
+        {
+          "group_1": "Consultoría",
+          "group_2": "Otro Tipo De Contrato",
+          "mean_diff": 0.5891,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Consultoría",
+          "group_2": "Prestacion De Servicios",
+          "mean_diff": -2.9923,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Consultoría",
+          "group_2": "Prestación De Servicios",
+          "mean_diff": -2.2783,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Consultoría",
+          "group_2": "Suministro",
+          "mean_diff": -3.0023,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Consultoría",
+          "group_2": "Suministros",
+          "mean_diff": -1.4047,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Decreto 092 De 2017",
+          "group_2": "Obra",
+          "mean_diff": 1.7532,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Decreto 092 De 2017",
+          "group_2": "Otro",
+          "mean_diff": 2.1155,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Decreto 092 De 2017",
+          "group_2": "Otro Tipo De Contrato",
+          "mean_diff": 2.6819,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Decreto 092 De 2017",
+          "group_2": "Prestacion De Servicios",
+          "mean_diff": -0.8995,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Decreto 092 De 2017",
+          "group_2": "Prestación De Servicios",
+          "mean_diff": -0.1855,
+          "p_adj": 9.6e-05,
+          "significant": true
+        },
+        {
+          "group_1": "Decreto 092 De 2017",
+          "group_2": "Suministro",
+          "mean_diff": -0.9095,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Decreto 092 De 2017",
+          "group_2": "Suministros",
+          "mean_diff": 0.688,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Obra",
+          "group_2": "Otro",
+          "mean_diff": 0.3623,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Obra",
+          "group_2": "Otro Tipo De Contrato",
+          "mean_diff": 0.9287,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Obra",
+          "group_2": "Prestacion De Servicios",
+          "mean_diff": -2.6527,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Obra",
+          "group_2": "Prestación De Servicios",
+          "mean_diff": -1.9387,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Obra",
+          "group_2": "Suministro",
+          "mean_diff": -2.6627,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Obra",
+          "group_2": "Suministros",
+          "mean_diff": -1.0652,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Otro",
+          "group_2": "Otro Tipo De Contrato",
+          "mean_diff": 0.5664,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Otro",
+          "group_2": "Prestacion De Servicios",
+          "mean_diff": -3.015,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Otro",
+          "group_2": "Prestación De Servicios",
+          "mean_diff": -2.3011,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Otro",
+          "group_2": "Suministro",
+          "mean_diff": -3.025,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Otro",
+          "group_2": "Suministros",
+          "mean_diff": -1.4275,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Otro Tipo De Contrato",
+          "group_2": "Prestacion De Servicios",
+          "mean_diff": -3.5814,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Otro Tipo De Contrato",
+          "group_2": "Prestación De Servicios",
+          "mean_diff": -2.8674,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Otro Tipo De Contrato",
+          "group_2": "Suministro",
+          "mean_diff": -3.5914,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Otro Tipo De Contrato",
+          "group_2": "Suministros",
+          "mean_diff": -1.9939,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Prestacion De Servicios",
+          "group_2": "Prestación De Servicios",
+          "mean_diff": 0.7139,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Prestacion De Servicios",
+          "group_2": "Suministro",
+          "mean_diff": -0.01,
+          "p_adj": 0.999971,
+          "significant": false
+        },
+        {
+          "group_1": "Prestacion De Servicios",
+          "group_2": "Suministros",
+          "mean_diff": 1.5875,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Prestación De Servicios",
+          "group_2": "Suministro",
+          "mean_diff": -0.724,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Prestación De Servicios",
+          "group_2": "Suministros",
+          "mean_diff": 0.8736,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Suministro",
+          "group_2": "Suministros",
+          "mean_diff": 1.5975,
+          "p_adj": 0.0,
+          "significant": true
+        }
+      ]
+    },
+    {
+      "group_col": "origen",
+      "n_comparisons": 3,
+      "significant_comparisons": 3,
+      "comparisons": [
+        {
+          "group_1": "SECOP_I",
+          "group_2": "SECOP_II",
+          "mean_diff": 0.9582,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "SECOP_I",
+          "group_2": "SECOP_INTEGRADO",
+          "mean_diff": 1.1685,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "SECOP_II",
+          "group_2": "SECOP_INTEGRADO",
+          "mean_diff": 0.2103,
+          "p_adj": 0.0,
+          "significant": true
+        }
+      ]
+    },
+    {
+      "group_col": "sector",
+      "n_comparisons": 45,
+      "significant_comparisons": 38,
+      "comparisons": [
+        {
+          "group_1": "Ambiente Y Desarrollo Sostenible",
+          "group_2": "Cultura",
+          "mean_diff": 0.061,
+          "p_adj": 0.952809,
+          "significant": false
+        },
+        {
+          "group_1": "Ambiente Y Desarrollo Sostenible",
+          "group_2": "Defensa",
+          "mean_diff": 0.2864,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Ambiente Y Desarrollo Sostenible",
+          "group_2": "Deportes",
+          "mean_diff": -0.5882,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Ambiente Y Desarrollo Sostenible",
+          "group_2": "Educación Nacional",
+          "mean_diff": -0.1632,
+          "p_adj": 0.001197,
+          "significant": true
+        },
+        {
+          "group_1": "Ambiente Y Desarrollo Sostenible",
+          "group_2": "Inclusión Social Y Reconciliación",
+          "mean_diff": 0.2366,
+          "p_adj": 3e-06,
+          "significant": true
+        },
+        {
+          "group_1": "Ambiente Y Desarrollo Sostenible",
+          "group_2": "No Aplica/No Pertenece",
+          "mean_diff": -0.257,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Ambiente Y Desarrollo Sostenible",
+          "group_2": "Salud Y Protección Social",
+          "mean_diff": -0.2836,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Ambiente Y Desarrollo Sostenible",
+          "group_2": "Servicio Público",
+          "mean_diff": -0.17,
+          "p_adj": 3e-06,
+          "significant": true
+        },
+        {
+          "group_1": "Ambiente Y Desarrollo Sostenible",
+          "group_2": "Trabajo",
+          "mean_diff": 0.2312,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Cultura",
+          "group_2": "Defensa",
+          "mean_diff": 0.2254,
+          "p_adj": 5.2e-05,
+          "significant": true
+        },
+        {
+          "group_1": "Cultura",
+          "group_2": "Deportes",
+          "mean_diff": -0.6491,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Cultura",
+          "group_2": "Educación Nacional",
+          "mean_diff": -0.2241,
+          "p_adj": 2.7e-05,
+          "significant": true
+        },
+        {
+          "group_1": "Cultura",
+          "group_2": "Inclusión Social Y Reconciliación",
+          "mean_diff": 0.1756,
+          "p_adj": 0.013635,
+          "significant": true
+        },
+        {
+          "group_1": "Cultura",
+          "group_2": "No Aplica/No Pertenece",
+          "mean_diff": -0.3179,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Cultura",
+          "group_2": "Salud Y Protección Social",
+          "mean_diff": -0.3446,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Cultura",
+          "group_2": "Servicio Público",
+          "mean_diff": -0.231,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Cultura",
+          "group_2": "Trabajo",
+          "mean_diff": 0.1703,
+          "p_adj": 0.006831,
+          "significant": true
+        },
+        {
+          "group_1": "Defensa",
+          "group_2": "Deportes",
+          "mean_diff": -0.8745,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Defensa",
+          "group_2": "Educación Nacional",
+          "mean_diff": -0.4495,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Defensa",
+          "group_2": "Inclusión Social Y Reconciliación",
+          "mean_diff": -0.0498,
+          "p_adj": 0.980461,
+          "significant": false
+        },
+        {
+          "group_1": "Defensa",
+          "group_2": "No Aplica/No Pertenece",
+          "mean_diff": -0.5433,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Defensa",
+          "group_2": "Salud Y Protección Social",
+          "mean_diff": -0.5699,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Defensa",
+          "group_2": "Servicio Público",
+          "mean_diff": -0.4564,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Defensa",
+          "group_2": "Trabajo",
+          "mean_diff": -0.0551,
+          "p_adj": 0.92557,
+          "significant": false
+        },
+        {
+          "group_1": "Deportes",
+          "group_2": "Educación Nacional",
+          "mean_diff": 0.425,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Deportes",
+          "group_2": "Inclusión Social Y Reconciliación",
+          "mean_diff": 0.8247,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Deportes",
+          "group_2": "No Aplica/No Pertenece",
+          "mean_diff": 0.3312,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Deportes",
+          "group_2": "Salud Y Protección Social",
+          "mean_diff": 0.3046,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Deportes",
+          "group_2": "Servicio Público",
+          "mean_diff": 0.4181,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Deportes",
+          "group_2": "Trabajo",
+          "mean_diff": 0.8194,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Educación Nacional",
+          "group_2": "Inclusión Social Y Reconciliación",
+          "mean_diff": 0.3997,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Educación Nacional",
+          "group_2": "No Aplica/No Pertenece",
+          "mean_diff": -0.0938,
+          "p_adj": 0.063094,
+          "significant": false
+        },
+        {
+          "group_1": "Educación Nacional",
+          "group_2": "Salud Y Protección Social",
+          "mean_diff": -0.1204,
+          "p_adj": 0.003148,
+          "significant": true
+        },
+        {
+          "group_1": "Educación Nacional",
+          "group_2": "Servicio Público",
+          "mean_diff": -0.0069,
+          "p_adj": 1.0,
+          "significant": false
+        },
+        {
+          "group_1": "Educación Nacional",
+          "group_2": "Trabajo",
+          "mean_diff": 0.3944,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Inclusión Social Y Reconciliación",
+          "group_2": "No Aplica/No Pertenece",
+          "mean_diff": -0.4935,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Inclusión Social Y Reconciliación",
+          "group_2": "Salud Y Protección Social",
+          "mean_diff": -0.5201,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Inclusión Social Y Reconciliación",
+          "group_2": "Servicio Público",
+          "mean_diff": -0.4066,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Inclusión Social Y Reconciliación",
+          "group_2": "Trabajo",
+          "mean_diff": -0.0053,
+          "p_adj": 1.0,
+          "significant": false
+        },
+        {
+          "group_1": "No Aplica/No Pertenece",
+          "group_2": "Salud Y Protección Social",
+          "mean_diff": -0.0266,
+          "p_adj": 0.973415,
+          "significant": false
+        },
+        {
+          "group_1": "No Aplica/No Pertenece",
+          "group_2": "Servicio Público",
+          "mean_diff": 0.087,
+          "p_adj": 0.000471,
+          "significant": true
+        },
+        {
+          "group_1": "No Aplica/No Pertenece",
+          "group_2": "Trabajo",
+          "mean_diff": 0.4882,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Salud Y Protección Social",
+          "group_2": "Servicio Público",
+          "mean_diff": 0.1136,
+          "p_adj": 1e-06,
+          "significant": true
+        },
+        {
+          "group_1": "Salud Y Protección Social",
+          "group_2": "Trabajo",
+          "mean_diff": 0.5148,
+          "p_adj": 0.0,
+          "significant": true
+        },
+        {
+          "group_1": "Servicio Público",
+          "group_2": "Trabajo",
+          "mean_diff": 0.4013,
+          "p_adj": 0.0,
+          "significant": true
+        }
+      ]
+    }
+  ],
+  "charts": {
+    "departamento": [
+      "boxplot_departamento_consolidado.png",
+      "bar_departamento_consolidado.png"
+    ],
+    "modalidad": [
+      "boxplot_modalidad_consolidado.png",
+      "bar_modalidad_consolidado.png"
+    ],
+    "tipo_contrato": [
+      "boxplot_tipo_contrato_consolidado.png",
+      "bar_tipo_contrato_consolidado.png"
+    ],
+    "origen": [
+      "boxplot_origen_consolidado.png",
+      "bar_origen_consolidado.png"
+    ],
+    "sector": [
+      "boxplot_sector_secop2.png",
+      "bar_sector_secop2.png"
+    ],
+    "modalidad + departamento": [
+      "interaction_modalidad_departamen.png"
+    ],
+    "modalidad_de_contratacion + tipo_de_contrato": [
+      "interaction_modalidad__tipo_de_co.png"
+    ]
+  }
+}
